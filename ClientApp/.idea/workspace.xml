@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="cc6bbcc3-c2b1-4a66-9ca9-dce725279363" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Bootstrap/AxiosHook.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App/Login/Data/Reducers/Reducers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/App/Login/Data/Reducers/Reducers.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App/Login/LoginComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App/Login/LoginComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App/Shared/SideBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App/Shared/SideBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="CSS File" />
+        <option value="tsconfig.json" />
+        <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1YBYuOoMNXtgrX4Pn2lv6oURtuw" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Bootstrap" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="ts.external.directory.path" value="D:\Project\aspcore_api_db_jwt\ClientApp\node_modules\typescript\lib" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Project\aspcore_api_db_jwt\ClientApp\src\Bootstrap" />
+      <recent name="D:\Project\aspcore_api_db_jwt\ClientApp\src\SharedComponents" />
+      <recent name="D:\Project\aspcore_api_db_jwt\ClientApp\public" />
+      <recent name="D:\Project\TareekOfuk-Dashboard\ClientApp\node_modules" />
+      <recent name="D:\Project\TareekOfuk-Dashboard\ClientApp\node_modules\" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Project\aspcore_api_db_jwt\ClientApp\src\Bootstrap" />
+      <recent name="D:\Project\aspcore_api_db_jwt\ClientApp\src\App\Shared" />
+      <recent name="D:\Project\aspcore_api_db_jwt\ClientApp\src" />
+      <recent name="D:\Project\aspcore_api_db_jwt\ClientApp\src\App\Login\Data" />
+      <recent name="D:\Project\aspcore_api_db_jwt\ClientApp\src\img" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="cc6bbcc3-c2b1-4a66-9ca9-dce725279363" name="Default Changelist" comment="" />
+      <created>1582417676963</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1582417676963</updated>
+      <workItem from="1582417683560" duration="1224000" />
+      <workItem from="1582660416440" duration="3619000" />
+      <workItem from="1582823983224" duration="974000" />
+      <workItem from="1582825289194" duration="1039000" />
+      <workItem from="1582826341360" duration="400000" />
+      <workItem from="1582827144421" duration="2157000" />
+      <workItem from="1582836294902" duration="10770000" />
+      <workItem from="1582990712899" duration="4154000" />
+      <workItem from="1583085201627" duration="3646000" />
+      <workItem from="1585098531632" duration="3235000" />
+      <workItem from="1594884932341" duration="265000" />
+      <workItem from="1594984033488" duration="183000" />
+      <workItem from="1598663684198" duration="34329000" />
+      <workItem from="1599002577873" duration="2992000" />
+      <workItem from="1600049316512" duration="758000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

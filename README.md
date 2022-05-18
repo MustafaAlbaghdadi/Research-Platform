@@ -1,1 +1,3 @@
-# aspcore_api_db_jwt
+# Research-Platform
+this project build with asp core and React 
+

@@ -1,40 +1,93 @@
-﻿<!DOCTYPE html>
+﻿@using aspcore.Models.Shared
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - aspcore</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/jquery.dataTables.css">
+
+    <link rel="stylesheet" href="~/lib/jquery/dist/jquery.js" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/js/bootstrap.js" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/aspcore.styles.css" asp-append-version="true" />
+    <style>
+        .bg-info {
+            background-color: #17a2b8 !important;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-info border-bottom box-shadow mb-3 text-light">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">aspcore</a>
+                <a class="navbar-brand" asp-area="" asp-controller="ResearchMUS" asp-action="Index">Research Platfrom</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        @if (User.IsInRole(UserType.Admin))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="ResearchMUS" asp-action="Index">Review</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Conferences" asp-action="Index">Conferences</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="ResearchMUS" asp-action="Archive">Archive</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="PaymentSettings" asp-action="">Payment</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Reports" asp-action="Departments">Departments</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Reports" asp-action="Quartile">Quartile</a>
+                            </li>
+
+
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Reports" asp-action="SDG">SDG</a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole(UserType.Client))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Order" asp-action="index">Administrative orders</a>
+                            </li>
+                        }
+
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class=" mx-4 " @*style="background-color:#EDEEFF"*@>
+        @*<partial name="_CookieConsentPartial" />*@
+
+        <main role="main" class="pb-0 card">
+
             @RenderBody()
         </main>
+
+
     </div>
 
     <footer class="border-top footer text-muted">
@@ -46,5 +99,85 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+
+    <link href="~/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+    <script type="text/javascript" charset="utf8" src="~/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="~/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="~/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="~/js/jszip.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="~/js/pdfmake.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="~/js/pdfmake.min.js.map"></script>
+
+    <script type="text/javascript" charset="utf8" src="~/js/vfs_fonts.js"></script>
+    <script type="text/javascript" charset="utf8" src="~/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="~/js/buttons.print.min.js"></script>
+
+    <script type="text/javascript" charset="utf8" src="~/js/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+
+
+        $('#myTable').ready(function () {
+
+            $('#myTable').DataTable({
+
+                "language": {
+                    "sLengthMenu": "_MENU_",
+                    "sInfoPostFix": "",
+                    "sSearch": "",
+                    "sEmptyTable": "No data available in table",
+                    "sInfo":  "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "oPaginate": {
+                        "sFirst": "First",
+                        "sLast": "Last",
+                        "sNext": "Next",
+                        "sPrevious": "Previous"
+
+                    },
+                }
+                ,
+
+                dom: 'Bfltipr',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        text: 'copy',
+                        className: 'btn btn-default'
+                    }
+                    ,
+                    {
+                        extend: 'csv',
+                        text: 'csv',
+                        className: 'btn btn-default'
+                    }
+                    ,
+                    {
+                        extend: 'excel',
+                        text: 'Excel',
+                        className: 'btn btn-default'
+
+                    }
+
+                    ,
+                    {
+                        extend: 'pdf',
+                        text: 'pdf',
+                        className: 'btn btn-default'
+                    }
+                    ,
+                    {
+                        extend: 'print',
+                        text: 'print',
+                        className: 'btn btn-default'
+                    }
+                ],
+            });
+        });
+
+
+    </script>
+
 </body>
 </html>

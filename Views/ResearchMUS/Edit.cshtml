@@ -1,0 +1,182 @@
+﻿@model aspcore.Models.ResearchMUS
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card-header">
+    <h3 class="float-start">Edit</h3>
+    <p class="float-end">
+        <a asp-action="Index" class="btn btn-outline-danger">Back</a>
+    </p>
+</div>
+
+<div class="card-body">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="title" class="control-label"></label>
+                    <input asp-for="title" class="form-control" />
+                    <span asp-validation-for="title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="link" class="control-label"></label>
+                    <input asp-for="link" class="form-control" />
+                    <span asp-validation-for="link" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="fileRes" class="control-label"></label>
+                    <input asp-for="fileRes" class="form-control" />
+                    <span asp-validation-for="fileRes" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="published" class="control-label"></label>
+                    <input asp-for="published" class="form-control" />
+                    <span asp-validation-for="published" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="pubDate" class="control-label"></label>
+                    <input asp-for="pubDate" class="form-control" />
+                    <span asp-validation-for="pubDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ISSNorEISSN" class="control-label"></label>
+                    <input asp-for="ISSNorEISSN" class="form-control" />
+                    <span asp-validation-for="ISSNorEISSN" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="journaltitle" class="control-label"></label>
+                    <input asp-for="journaltitle" class="form-control" />
+                    <span asp-validation-for="journaltitle" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="journalurl" class="control-label"></label>
+                    <input asp-for="journalurl" class="form-control" />
+                    <span asp-validation-for="journalurl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="publisher" class="control-label"></label>
+                    <input asp-for="publisher" class="form-control" />
+                    <span asp-validation-for="publisher" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="quartile" class="control-label"></label>
+                    <input asp-for="quartile" class="form-control" />
+                    <span asp-validation-for="quartile" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="citeScore" class="control-label"></label>
+                    <input asp-for="citeScore" class="form-control" />
+                    <span asp-validation-for="citeScore" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="JournalCountry" class="control-label"></label>
+                    <input asp-for="JournalCountry" class="form-control" />
+                    <span asp-validation-for="JournalCountry" class="text-danger"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="rankOutOf" class="control-label"></label>
+                    <input asp-for="rankOutOf" class="form-control" />
+                    <span asp-validation-for="rankOutOf" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="openAccess" class="control-label"></label>
+                    <input asp-for="openAccess" class="form-control" />
+                    <span asp-validation-for="openAccess" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OtherResearch" class="control-label"></label>
+                    <input asp-for="OtherResearch" class="form-control" />
+                    <span asp-validation-for="OtherResearch" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="appledPaper" class="control-label"></label>
+                    <input asp-for="appledPaper" class="form-control" />
+                    <span asp-validation-for="appledPaper" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="code" class="control-label"></label>
+                    <input asp-for="code" class="form-control" />
+                    <span asp-validation-for="code" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="uploadDate" class="control-label"></label>
+                    <input asp-for="uploadDate" class="form-control" />
+                    <span asp-validation-for="uploadDate" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="scopas" /> @Html.DisplayNameFor(model => model.scopas)
+                    </label>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="clarivate" /> @Html.DisplayNameFor(model => model.clarivate)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="viewlvl" class="control-label"></label>
+                    <input asp-for="viewlvl" class="form-control" />
+                    <span asp-validation-for="viewlvl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="publisherEmail" class="control-label"></label>
+                    <input asp-for="publisherEmail" class="form-control" />
+                    <span asp-validation-for="publisherEmail" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SDGtype" class="control-label"></label>
+                    <input asp-for="SDGtype" class="form-control" />
+                    <span asp-validation-for="SDGtype" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Notes" class="control-label"></label>
+                    <input asp-for="Notes" class="form-control" />
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="ThanksOFcoll" /> @Html.DisplayNameFor(model => model.ThanksOFcoll)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImpactFacter" class="control-label"></label>
+                    <input asp-for="ImpactFacter" class="form-control" />
+                    <span asp-validation-for="ImpactFacter" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="ExtResrch" /> @Html.DisplayNameFor(model => model.ExtResrch)
+                    </label>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="ExtResrch_Local" /> @Html.DisplayNameFor(model => model.ExtResrch_Local)
+                    </label>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="ExtResrch_Globl" /> @Html.DisplayNameFor(model => model.ExtResrch_Globl)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="QRimage" class="control-label"></label>
+                    <input asp-for="QRimage" class="form-control" />
+                    <span asp-validation-for="QRimage" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastUpDate" class="control-label"></label>
+                    <input asp-for="LastUpDate" class="form-control" />
+                    <span asp-validation-for="LastUpDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>>

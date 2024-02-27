@@ -1,0 +1,421 @@
+﻿@model IEnumerable<aspcore.Models.ResearchMUS>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card col-12 border-0">
+
+
+    <div class="card-header">
+        <h3 class="float-start">Archive Researches</h3>
+        @*  <p class="float-end">
+            <a asp-action="Create" class="btn btn-primary">Create</a>
+            </p>*@
+    </div>
+
+
+
+    <br />
+
+    <form action="/ResearchMUS/Archive" id="myForm" method="post" class="px-2" onchange="document.getElementById('myForm').submit()">
+        <div class="row">
+            <div class="form-group  col-md-4">
+                <label class="control-label">Department</label>
+                <select name="DepId" class="form-control" asp-items='ViewBag.Dep'>
+                    <option>All</option>
+                </select>
+                <span name="QuartileSelected" class="text-danger"></span>
+            </div>
+            <div class="form-group  col-md-2">
+                <label class="control-label">Quartile</label>
+                <select name="QuarterSelected" class="form-control" asp-items='ViewBag.Quartile'>
+                    <option>All</option>
+                </select>
+                <span name="QuartileSelected" class="text-danger"></span>
+            </div>
+            <div class="form-group  col-md-2">
+                <label class="control-label">Research</label>
+                <select name="ResearchType" class="form-control" asp-items='ViewBag.ResearchType'>
+                    <option>All</option>
+                </select>
+                <span name="Research" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-2">
+                <label class="control-label">Open Access</label>
+                <select name="OpenAccessSelected" class="form-control" asp-items="ViewBag.OpenAccessSelected">
+                    <option>Any</option>
+                </select>
+            </div>
+            <div class="form-group col-md-2">
+                <label class="control-label">Applied</label>
+
+                <select name="AppliedSelected" class="form-control" asp-items="ViewBag.AppliedSelected">
+                    <option>Any</option>
+                </select>
+            </div>
+        </div>
+
+
+
+        <div class="row mt-1">
+            <div class="form-group  col-md-2">
+                <label class="control-label">Researcher Name</label>
+                <input type="text" class="form-control" placeholder="Researcher Name" name="Name" value="@ViewBag.Name" />
+            </div>
+
+            <div class="form-group  col-md-2">
+                <label class="control-label">Publish Type</label>
+                <select name="PublishType" class="form-control" asp-items="ViewBag.PublishType">
+                    <option>Any</option>
+                </select>
+            </div>
+
+            <div class="form-group  col-md-2">
+                <label class="control-label">SDG</label>
+                <select name="SDG" class="form-control" asp-items="ViewBag.SDG">
+                    <option>Any</option>
+                </select>
+            </div>
+            <div class="form-group  col-md-2">
+                <label class="control-label">Impact Facter Larger than</label>
+                <input type="number" class="form-control" placeholder="Impact Facter" name="ImpactFacter" value="@ViewBag.ImpactFacter" />
+            </div>
+            <div class="form-group  col-md-2">
+                <label class="control-label">From upload Date</label>
+                <input type="date" class="form-control" name="fromDate" value="@ViewBag.fromDate" />
+            </div>
+            <div class="form-group  col-md-2">
+                <label class="control-label">To upload Date</label>
+                <input type="date" class="form-control" name="toDate" value="@ViewBag.toDate" />
+            </div>
+        </div>
+
+        <div class="row mt-1">
+            <div class="form-group  col-md-2">
+                <label class="control-label">Journal Title</label>
+                <input type="text" class="form-control" placeholder="Journal Title" name="journaltitle" value="@ViewBag.Journaltitle" />
+            </div>
+
+            <div class="form-group  col-md-2">
+                <label class="control-label">Journal Type</label>
+                <select name="JournalType" class="form-control" asp-items="ViewBag.JournalType">
+                    <option>Any</option>
+                </select>
+            </div>
+
+            <div class="form-check  col-md-1 text-center">
+                <label class="control-label">Journal Title </label>
+                <p>
+                    @Html.CheckBox("journaltitleCheck")
+                </p>
+            </div>
+
+            <div class="form-check  col-md-1 text-center">
+                <label class="control-label">Quarter</label>
+                <p>
+                    @Html.CheckBox("QuarterCheck")
+                </p>
+            </div>
+            <div class="form-check  col-md-1 text-center">
+                <label class="control-label">SDG</label>
+                <p>
+                    @Html.CheckBox("SDGCheck")
+                </p>
+            </div>
+            <div class="form-check col-md-1 text-center" style="margin:0px;padding:0px">
+                <label class="control-label">@Html.DisplayNameFor(model => model.totalMoney)</label>
+                <p>
+                    @Html.CheckBox("TotalMoneyCheck")
+                </p>
+            </div>
+            <div class="form-check  col-md-1 text-center">
+                <label class="control-label ">Country</label>
+                <p>
+                    @Html.CheckBox("JournalCountryCheck")
+                </p>
+            </div>
+            <div class="form-check  col-md-1 text-center">
+                <label class="control-label ">@Html.DisplayNameFor(model => model.publisher)</label>
+                <p>
+                    @Html.CheckBox("PublisherCheck")
+                </p>
+            </div>
+            <div class="form-check  col-md-1 text-center">
+                <label class="control-label ">pubDate</label>
+                <p>
+                    @Html.CheckBox("PublishDateCheck")
+                </p>
+            </div>
+            <div class="form-check  col-md-1 text-center">
+                <label class="control-label ">Link</label>
+                <p>
+                    @Html.CheckBox("ResearchLinkCheck")
+                </p>
+            </div>
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+    </form>
+    <br />
+
+
+
+
+
+
+
+
+
+
+
+    <div class="card-body">
+
+        <table id="myTable" class="table px-0">
+            <thead>
+                <tr>
+                    <th class=col-1>
+
+                    </th>
+                    <th class=col-3>
+                        @Html.DisplayNameFor(model => model.title)
+                    </th>
+
+                    <th class="col-2">
+                        @Html.DisplayNameFor(model => model.Names)
+                    </th>
+
+                    <th class="col-1">
+                        @Html.DisplayNameFor(model => model.Degrees)
+                    </th>
+
+
+
+                    <th class="col-1">
+                        @Html.DisplayNameFor(model => model.Departments)
+                    </th> 
+                    <th class="col-1">
+                        @Html.DisplayNameFor(model => model.Amounts)
+                    </th>
+
+                    <th class="col-1">
+                        @Html.DisplayNameFor(model => model.published)
+
+                    </th>
+
+
+
+                    @if (ViewBag.journaltitleCheck)
+                    {
+                        <th class="col-2">
+                            @Html.DisplayNameFor(model => model.journaltitle)
+
+                        </th>
+                    }
+                    @if (ViewBag.QuarterCheck)
+                    {
+                        <th class="col-2">
+                            @Html.DisplayNameFor(model => model.quartile)
+
+                        </th>
+                    }
+                    @if (ViewBag.SDGCheck)
+                    {
+                        <th class="col-2">
+                            @Html.DisplayNameFor(model => model.quartile)
+
+                        </th>
+                    }
+                    @if (ViewBag.TotalMoneyCheck)
+                    {
+                        <th class="col-2">
+                            @Html.DisplayNameFor(model => model.totalMoney)
+
+                        </th>
+                    }
+
+                    @if (ViewBag.JournalCountryCheck)
+                    {
+                        <th class="col-2">
+                            @Html.DisplayNameFor(model => model.JournalCountry)
+
+                        </th>
+                    }
+                    @if (ViewBag.PublisherCheck)
+                    {
+                        <th class="col-2">
+                            @Html.DisplayNameFor(model => model.publisher)
+
+                        </th>
+                    }
+                    @if (ViewBag.PublishDateCheck)
+                    {
+                        <th class="col-2">
+                            @Html.DisplayNameFor(model => model.pubDate)
+
+                        </th>
+                    }
+                    @if (ViewBag.ResearchLinkCheck)
+                    {
+                        <th class="col-2">
+                            @Html.DisplayNameFor(model => model.link)
+
+                        </th>
+                    }
+
+
+
+
+
+
+                    <th class="col-1"></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @{
+                                @Html.DisplayFor(modelItem => item.code)
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.title)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Names)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Degrees)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Departments)
+                        </td> 
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amounts)
+                        </td>
+
+
+                        <td>
+                            @(item.published== "0"? "منشور" : "منشور ومفهرس")
+                        </td>
+
+
+                        @if (ViewBag.journaltitleCheck)
+                        {
+                            <th class="col-2">
+                                @Html.DisplayFor(model => item.journaltitle)
+
+                            </th>
+                        }
+                        @if (ViewBag.QuarterCheck)
+                        {
+                            <th class="col-1">
+                                @Html.DisplayFor(model => item.quartile)
+
+                            </th>
+                        }
+                        @if (ViewBag.SDGCheck)
+                        {
+                            <th class="col-1">
+                                @Html.DisplayFor(model => item.SDGtype)
+
+                            </th>
+                        }
+
+                        @if (ViewBag.TotalMoneyCheck)
+                        {
+                            <th class="col-1">
+                                @Html.DisplayFor(model => item.totalMoney)
+
+                            </th>
+                        }
+                        @if (ViewBag.JournalCountryCheck)
+                        {
+                            <th class="col-1">
+                                @Html.DisplayFor(model => item.JournalCountry)
+
+                            </th>
+                        }
+                        @if (ViewBag.PublisherCheck)
+                        {
+                            <th class="col-1">
+                                @Html.DisplayFor(model => item.publisher)
+
+                            </th>
+                        }
+                        @if (ViewBag.PublishDateCheck)
+                        {
+                            <th class="col-1">
+                                @Html.DisplayFor(model => item.pubDate)
+
+                            </th>
+                        }
+                        @if (ViewBag.ResearchLinkCheck)
+                        {
+                            <th class="col-1">
+                                @Html.DisplayFor(model => item.link)
+
+                            </th>
+                        }
+
+
+
+
+                        <td>
+                            @*   <a class="btn btn-outline-info" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            *@
+                            <a class="btn btn-outline-danger" asp-action="ArchiveReview" asp-route-id="@item.Id">Detalis</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<script>
+
+
+
+
+
+
+
+    $('#myTable_filter label input').attr("placeholder", "Type here to search");
+    $('#myTable_filter label input').placeholder();
+
+</script>
+
+<style>
+    #myTable_length {
+        float: right;
+        text-align: right;
+    }
+</style>
+
+
+
+
+
+
+
+

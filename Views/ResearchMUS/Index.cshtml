@@ -1,0 +1,84 @@
+﻿@model IEnumerable<aspcore.Models.ResearchMUS>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card col-12 border-0">
+
+
+    <div class="card-header">
+        <h3 class="float-start">Review Researches</h3>
+      @*  <p class="float-end">
+            <a asp-action="Create" class="btn btn-primary">Create</a>
+        </p>*@
+    </div>
+
+    <div class="card-body">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class=col-1>
+
+                    </th>
+                    <th class=col-6>
+                        @Html.DisplayNameFor(model => model.title)
+                    </th>
+
+                    <th class="col-2">
+                        @Html.DisplayNameFor(model => model.published)
+                    </th>
+                    <th class="col-1">
+                        @Html.DisplayNameFor(model => model.uploadDate)
+                    </th>
+
+
+
+                    <th class="col-1">
+                        @Html.DisplayNameFor(model => model.quartile)
+                    </th>
+
+                    <th class="col-1"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 0;
+                }
+                @foreach (var item in Model)
+                {
+                    i++;
+                    <tr>
+                        <td>
+                            @(i.ToString())
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.title)
+                        </td>
+
+                        <td>
+                            @(item.published== "0"? "منشور" : "منشور ومفهرس")
+@*                            @Html.DisplayFor(modelItem => item.published== "0"? "منشور" : "منشور ومفهرس")
+*@                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.uploadDate)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.quartile)
+                        </td>
+
+                        <td>
+                         @*   <a class="btn btn-outline-info" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+*@                            <a class="btn btn-outline-danger" asp-action="Review" asp-route-id="@item.Id">Review</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

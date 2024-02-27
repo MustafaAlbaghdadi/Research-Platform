@@ -16,7 +16,7 @@ namespace aspcore.Models
             return new Initializer()._CreateRoles(serviceProvider);
 
         }
-    
+
         private async Task _CreateRoles(IServiceProvider serviceProvider)
         {
             //adding custom roles
@@ -44,12 +44,13 @@ namespace aspcore.Models
 
             User powerUser = new User
             {
-                UserName = "Admin",
+                UserName = "it",
                 IsActive = true,
             };
 
-            const string userPassword = "visa2020";
-            IdentityUser user = await userManager.FindByNameAsync("Admin");
+            const string userPassword = "ABcd!@123";
+            IdentityUser user = await userManager.FindByNameAsync("it");
+            IdentityUser ClientUser = await userManager.FindByNameAsync("rusul");
 
             if (user == null)
             {
@@ -57,6 +58,22 @@ namespace aspcore.Models
                 if (createPowerUser.Succeeded)
                 {
                     await userManager.AddToRoleAsync(powerUser, UserType.Admin);
+                }
+            }
+
+
+            User cUser = new User
+            {
+                UserName = "rusul",
+                IsActive = true,
+            };
+
+            if (ClientUser == null)
+            {
+                IdentityResult createPowerUser = await userManager.CreateAsync(cUser, "rusulmus2023");
+                if (createPowerUser.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(cUser, UserType.Client);
                 }
             }
 

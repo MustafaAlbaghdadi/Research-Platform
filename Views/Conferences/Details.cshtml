@@ -1,0 +1,219 @@
+﻿@model aspcore.Models.Conference
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Conference</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Code)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ResearchTitle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ResearchTitle)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MainFile)
+        </dt>
+        <dd class="col-sm-10">
+            <a target="_blank" href="http://res.uomus.edu.iq/@Html.DisplayFor(model => model.MainFile)" class="btn btn-primary">
+                Download
+            </a>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PublishDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PublishDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Publisher)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Publisher)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+        <dt class="col-sm-2">
+
+
+            @Html.DisplayNameFor(model => model.Attach1)
+        </dt>
+        <dd class="col-sm-10">
+            <a target="_blank" href="http://res.uomus.edu.iq/@Html.DisplayFor(model => model.Attach1)" class="btn btn-primary">
+                Download
+            </a>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Attach2)
+        </dt>
+        <dd class="col-sm-10">
+            <a target="_blank" href="http://res.uomus.edu.iq/@Html.DisplayFor(model => model.Attach2)" class="btn btn-primary">
+                Download
+            </a>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PriviteCollege)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PriviteCollege)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PublicCollege)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PublicCollege)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GlobalCollege)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GlobalCollege)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Acknowledge)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Acknowledge)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalAmount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalAmount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreateDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastUpdate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastUpdate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RejectReson)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RejectReson)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UploaderEmail)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UploaderEmail)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.QRImage)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.QRImage)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ScopusLink)
+        </dt>
+        <dd class="col-sm-10">
+            <a href="@Model.ScopusLink">ScopusLink</a>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ResearchLink)
+        </dt>
+        <dd class="col-sm-10">
+            <a href="@Model.ResearchLink">ResearchLink</a>
+
+        </dd>
+    </dl>
+</div>
+<a target="_blank" href="http://res.uomus.edu.iq/ConferenceForm.aspx?res=@(Model.ID)&pass=@(Model.ID*2)" class="btn btn-primary">عرض الاستمارة</a>
+
+</br>
+<div class="row ">
+
+    <div class="card col-12 col-sm-5">
+        <div class="card-header">
+            Reject
+
+
+        </div>
+        <div class="card-body">
+            <form asp-action="Delete">
+
+                <input type="hidden" asp-for="ID" />
+                <div class="form-group">
+                    <label asp-for="RejectReson" class="control-label"></label>
+                    <textarea asp-for="RejectReson" class="form-control mt-2" rows="3"><</textarea>
+                 </div>
+                <br />
+                <input type="submit" value="Reject" class="btn btn-danger" />
+
+
+            </form>
+        </div>
+    </div>
+
+    <div class="col-2 text-center d-sm-block d-none">
+        <img src="https://uomus.edu.iq/assetsv2/img/logofooter.png" />
+    </div>
+
+
+
+    <div class="card col-12 col-sm-5">
+        <div class="card-header">
+
+            Approve
+
+
+        </div>
+        <div class="card-body">
+            <form asp-action="Approve">
+                <input type="hidden" asp-for="ID" />
+                <br />
+                <center>
+
+                    <input type="submit" value="Approve" class="btn btn-primary" />
+
+                </center>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+

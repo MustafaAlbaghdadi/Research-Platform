@@ -1,11 +1,13 @@
 using aspcore.Data;
 using aspcore.Models;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.FileProviders;
+
+
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +42,8 @@ catch
     // ignored
 }
 
+
+
 var app = builder.Build();
 
 
@@ -55,8 +59,14 @@ else
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.ContentRootPath, "Files")),
+    RequestPath = "/Files"
+});
 
 app.UseRouting();
 
@@ -65,7 +75,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=ResearchMUS}/{action=Index}/{id?}");
 app.MapRazorPages();
 
 

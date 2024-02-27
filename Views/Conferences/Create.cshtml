@@ -1,0 +1,144 @@
+﻿@model aspcore.Models.Conference
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Conference</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Code" class="control-label"></label>
+                <input asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResearchTitle" class="control-label"></label>
+                <input asp-for="ResearchTitle" class="form-control" />
+                <span asp-validation-for="ResearchTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MainFile" class="control-label"></label>
+                <input asp-for="MainFile" class="form-control" />
+                <span asp-validation-for="MainFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PublishDate" class="control-label"></label>
+                <input asp-for="PublishDate" class="form-control" />
+                <span asp-validation-for="PublishDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Publisher" class="control-label"></label>
+                <input asp-for="Publisher" class="form-control" />
+                <span asp-validation-for="Publisher" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Attach1" class="control-label"></label>
+                <input asp-for="Attach1" class="form-control" />
+                <span asp-validation-for="Attach1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Attach2" class="control-label"></label>
+                <input asp-for="Attach2" class="form-control" />
+                <span asp-validation-for="Attach2" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PriviteCollege" /> @Html.DisplayNameFor(model => model.PriviteCollege)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PublicCollege" /> @Html.DisplayNameFor(model => model.PublicCollege)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="GlobalCollege" /> @Html.DisplayNameFor(model => model.GlobalCollege)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Acknowledge" /> @Html.DisplayNameFor(model => model.Acknowledge)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalAmount" class="control-label"></label>
+                <input asp-for="TotalAmount" class="form-control" />
+                <span asp-validation-for="TotalAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreateDate" class="control-label"></label>
+                <input asp-for="CreateDate" class="form-control" />
+                <span asp-validation-for="CreateDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastUpdate" class="control-label"></label>
+                <input asp-for="LastUpdate" class="form-control" />
+                <span asp-validation-for="LastUpdate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" class="form-control"></select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RejectReson" class="control-label"></label>
+                <input asp-for="RejectReson" class="form-control" />
+                <span asp-validation-for="RejectReson" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UploaderEmail" class="control-label"></label>
+                <input asp-for="UploaderEmail" class="form-control" />
+                <span asp-validation-for="UploaderEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QRImage" class="control-label"></label>
+                <input asp-for="QRImage" class="form-control" />
+                <span asp-validation-for="QRImage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScopusLink" class="control-label"></label>
+                <input asp-for="ScopusLink" class="form-control" />
+                <span asp-validation-for="ScopusLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResearchLink" class="control-label"></label>
+                <input asp-for="ResearchLink" class="form-control" />
+                <span asp-validation-for="ResearchLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

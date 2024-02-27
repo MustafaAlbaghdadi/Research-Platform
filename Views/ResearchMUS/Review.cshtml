@@ -1,0 +1,445 @@
+﻿@model aspcore.Models.ResearchMUS
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-header">
+    <h3 class="float-start">Review</h3>
+    <p class="float-end">
+        <a asp-action="Index" class="btn btn-outline-danger">Back</a>
+    </p>
+</div>
+
+
+
+
+<div class="card-body">
+    <table class="table">
+        <thead>
+            <tr>
+                <th class=col-1>
+
+                </th>
+                <th class=col-1>
+                    @Html.DisplayNameFor(model => model.ResearchersList.First().ResearcherLvl)
+
+                </th>
+                <th class="col-1">
+                    @Html.DisplayNameFor(model => model.ResearchersList.First().ResearcherGender)
+                </th>
+                <th class=col-4>
+                    @Html.DisplayNameFor(model => model.ResearchersList.First().ResearcherEnName)
+                </th>
+
+                <th class="col-5">
+                    @Html.DisplayNameFor(model => model.ResearchersList.First().ResearcherArName)
+                </th>
+                <th class="col-5">
+                    @Html.DisplayNameFor(model => model.ResearchersList.First().ResearcherMoney)
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model.ResearchersList)
+            {
+                <tr class="align-middle">
+                    <td>
+
+                        <a target="_blank" href="@item.img.Replace("~","https://uomus.edu.iq")">
+                            <img class="rounded-circle" width="50" height="50" src="@item.img.Replace("~","https://uomus.edu.iq")" data-holder-rendered="true">
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ResearcherLvl)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ResearcherGender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ResearcherEnName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ResearcherArName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ResearcherMoney)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <br />
+
+    <br />
+
+    <div class="row">
+        <div class="col-12 col-sm-7">
+
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.title)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.title)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.published)
+                </dt>
+                <dd class="col-sm-10">
+                    @(Model.published== "0"? "منشور" : "منشور ومفهرس")
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.pubDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.pubDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ISSNorEISSN)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ISSNorEISSN)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.journaltitle)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.journaltitle)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.publisher)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.publisher)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.quartile)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.quartile)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.citeScore)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.citeScore)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.JournalCountry)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.JournalCountry)
+                </dd>
+
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.openAccess)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.openAccess)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.appledPaper)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.appledPaper)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.code)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.code)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.publisherEmail)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.publisherEmail)
+                </dd>
+
+
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ThanksOFcoll)
+                </dt>
+                <dd class="col-sm-10">
+                    <input type="checkbox" checked="@Model.ThanksOFcoll" onclick="return false;" />
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ImpactFacter)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ImpactFacter)
+                </dd>
+
+            </dl>
+
+
+
+        </div>
+        <div class="col-12 col-sm-5">
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.link)
+                </dt>
+                <dd class="col-sm-9">
+
+                    <a target="_blank" href="@Html.DisplayFor(model => model.link)">
+                        @Html.DisplayFor(model => model.link)
+                    </a>
+                </dd>
+                <dt class="col-sm-3">
+
+                    @Html.DisplayNameFor(model => model.journalurl)
+                </dt>
+                <dd class="col-sm-9">
+                    <a target="_blank" href="@Html.DisplayFor(model => model.journalurl)">
+                        @Html.DisplayFor(model => model.journalurl)
+                    </a>
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.fileRes)
+                </dt>
+                <dd class="col-sm-9">
+
+                    <a target="_blank" href="http://res.uomus.edu.iq/@Html.DisplayFor(model => model.fileRes)" class="btn btn-primary">
+                        Download
+                    </a>
+                </dd>
+
+
+                @if (Model.attachedFile1 != null && !string.IsNullOrWhiteSpace(Model.attachedFile1))
+                {
+
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.attachedFile1)
+                    </dt>
+                    <dd class="col-sm-9">
+
+                        <a target="_blank" href="http://res.uomus.edu.iq/@Html.DisplayFor(model => model.attachedFile1)" class="btn btn-primary">
+                            Download
+                        </a>
+                    </dd>
+                }
+
+                
+                @if (Model.attachedFile2 != null && !string.IsNullOrWhiteSpace(Model.attachedFile2))
+                {
+
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.attachedFile2)
+                    </dt>
+                    <dd class="col-sm-9">
+
+                        <a target="_blank" href="http://res.uomus.edu.iq/@Html.DisplayFor(model => model.attachedFile2)" class="btn btn-primary">
+                            Download
+                        </a>
+                    </dd>
+                }
+
+                 @if (Model.attachedFile3 != null && !string.IsNullOrWhiteSpace(Model.attachedFile3))
+                {
+
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.attachedFile3)
+                    </dt>
+                    <dd class="col-sm-9">
+
+                        <a target="_blank" href="http://res.uomus.edu.iq/@Html.DisplayFor(model => model.attachedFile3)" class="btn btn-primary">
+                            Download
+                        </a>
+                    </dd>
+                }
+
+                
+                 @if (Model.attachedFile4 != null && !string.IsNullOrWhiteSpace(Model.attachedFile4))
+                {
+
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.attachedFile4)
+                    </dt>
+                    <dd class="col-sm-9">
+
+                        <a target="_blank" href="http://res.uomus.edu.iq/@Html.DisplayFor(model => model.attachedFile3)" class="btn btn-primary">
+                            Download
+                        </a>
+                    </dd>
+                }
+
+
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.uploadDate)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.uploadDate)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.LastUpDate)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.LastUpDate)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.OtherResearch)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.OtherResearch)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.ExtResrch)
+                </dt>
+                <dd class="col-sm-9">
+                    <input type="checkbox" checked="@Model.ExtResrch" onclick="return false;" />
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.ExtResrch_Local)
+                </dt>
+                <dd class="col-sm-9">
+                    <input type="checkbox" checked="@Model.ExtResrch_Local" onclick="return false;" />
+
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.ExtResrch_Globl)
+                </dt>
+                <dd class="col-sm-9">
+                    <input type="checkbox" checked="@Model.ExtResrch_Globl" onclick="return false;" />
+
+                </dd>
+
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.scopas)
+                </dt>
+                <dd class="col-sm-9">
+                    <input type="checkbox" checked="@Model.scopas" onclick="return false;" />
+
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.clarivate)
+                </dt>
+                <dd class="col-sm-9">
+                    <input type="checkbox" checked="@Model.clarivate" onclick="return false;" />
+
+                </dd>
+
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Notes)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Notes)
+                </dd>
+            </dl>
+        </div>
+
+    </div>
+    <center>
+        <a target="_blank" href="http://res.uomus.edu.iq/showForm.aspx?res=@(Model.Id)&pass=@(Model.Id*2)" class="btn btn-primary">عرض الاستمارة</a>
+    </center>
+
+    <br />
+
+    <div class="row ">
+
+        <div class="card col-12 col-sm-5">
+            <div class="card-header">
+                Reject
+
+
+            </div>
+            <div class="card-body">
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-group">
+                        <label asp-for="RejectReason" class="control-label"></label>
+                        <textarea asp-for="RejectReason" class="form-control mt-2" rows="3"><</textarea>
+                        <span asp-validation-for="RejectReason" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <input type="submit" value="Reject" class="btn btn-danger" />
+
+                </form>
+            </div>
+        </div>
+
+        <div class="col-2 text-center d-sm-block d-none">
+            <img src="https://uomus.edu.iq/assetsv2/img/logofooter.png" />
+        </div>
+
+
+
+        <div class="card col-12 col-sm-5">
+            <div class="card-header">
+                Approve
+
+
+            </div>
+            <div class="card-body">
+                <form asp-action="Approve">
+                    <input type="hidden" asp-for="Id" />
+
+                    @* <div class="form-group">
+                        <label asp-for="SDGList" class="control-label"></label>
+
+                        <select asp-for="SDGList" style=" text-align-last: right;"  class="selectpicker form-control mt-2  " multiple data-live-search="true">
+                        <option style="text-align:right"  value="1">الهدف 1– القضاء على الفقر</option>
+                        <option style="text-align:right"  value="2">الهدف 2 – القضاء التام على الجوع</option>
+                        <option style="text-align:right"  value="3">الهدف 3 – الصحة الجيدة والرفاه</option>
+                        <option style="text-align:right"  value="4">الهدف 4 – التعليم الجيد</option>
+                        <option style="text-align:right"  value="5">الهدف 5 – المساواة بين الجنسين</option>
+                        <option style="text-align:right"  value="6">الهدف 6 – المياه النظيفة والنظافة الصحية</option>
+                        <option style="text-align:right"  value="7">الهدف 7– طاقة نظيفة وبأسعار معقولة</option>
+                        <option style="text-align:right"  value="8">الهدف 8– العمل اللائق ونمو الاقتصاد</option>
+                        <option style="text-align:right"  value="9">الهدف 9– الصناعة والابتكار والبنية التحتية</option>
+                        <option style="text-align:right"  value="10">الهدف 10– الحد من أوجه عدم المساواة</option>
+                        <option style="text-align:right"  value="11">الهدف 11– مدن ومجتمعات محلية مستدامة</option>
+                        <option style="text-align:right"  value="12">الهدف 12– الاستهلاك والإنتاج المسؤولان</option>
+                        <option style="text-align:right"  value="13">الهدف 13– العمل المناخي</option>
+                        <option style="text-align:right"  value="14">الهدف 14– الحياة تحت الماء</option>
+                        <option style="text-align:right"  value="15">الهدف 15– الحياة في البرّ</option>
+                        <option style="text-align:right"  value="16">الهدف 16– السلام والعدالة والمؤسسات القوية</option>
+                        <option style="text-align:right"  value="17">الهدف 17– عقد الشراكة لتحقيق الأهداف</option>
+                        </select>
+
+
+                        <span asp-validation-for="SDGList" class="text-danger"></span>
+                        </div>
+
+                        <br />
+                        <div class="form-group">
+                        <label asp-for="totalMoney" class="control-label"></label>
+                        <input required asp-for="totalMoney" class="form-control mt-2" type="number"></input>
+                        <span asp-validation-for="totalMoney" class="text-danger"></span>
+                        </div>*@
+
+                    <br />
+                    <center>
+                        <input type="submit" value="Approve" class="btn btn-primary" />
+                    </center>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+

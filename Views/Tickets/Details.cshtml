@@ -1,0 +1,110 @@
+﻿@model aspcore.Models.Ticket
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-header">
+    <h3 class="float-start">Details</h3>
+    <p class="float-end">
+        <a asp-action="Index" class="btn btn-outline-danger">Back</a>
+    </p>
+</div>
+
+<div class="card-body">
+    <dl class="row px-4">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsOpein)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsOpein)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.userId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.userId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastUpdate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastUpdate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreateDate)
+        </dd>
+    </dl>
+
+    @if (Model.Comments != null)
+    {
+        @foreach (var item in Model.Comments)
+        {
+            @if (item.UserId == "Admin")
+            {
+                <div class="alert alert-primary" role="alert">
+                    <div>
+                        <b>@item.UserId</b>
+
+                        <p style="float:right">@item.date.ToString()</p>
+                    </div>
+                    @item.Body
+                </div>
+            }
+            else
+            {
+                <div class="alert  alert-warning" role="alert">
+                    <div>
+                        <b>@item.UserId</b>
+
+                        <p style="float:right">@item.date.ToString()</p>
+                    </div>
+                    @item.Body
+                </div>
+
+            }
+
+
+
+        }
+
+    }
+</div>
+
+
+
+<div class="row px-4">
+
+    <a class="btn  btn-primary" asp-controller="Comments" asp-action="Create" asp-route-id="@Model.Id">add Reply</a>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

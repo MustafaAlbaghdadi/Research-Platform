@@ -1,0 +1,47 @@
+﻿@model aspcore.Models.Ticket
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card-header">
+    <h3 class="float-start">Create Ticket</h3>
+    <p class="float-end">
+        <a asp-action="Index" class="btn btn-outline-danger">Back</a>
+    </p>
+</div>
+
+<div class="card-body">
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group ">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" multiple="true"  />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                </br>
+
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+ 
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

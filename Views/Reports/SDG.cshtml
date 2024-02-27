@@ -1,0 +1,73 @@
+﻿@model List<aspcore.Models.Reports.DepartmentsReportModel>
+
+@{
+    ViewData["Title"] = "DepartmentsReportModel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card-header">
+    <h3 class="float-start">SDG Report</h3>
+    <p class="float-end mx-2">
+        <a href="/Reports/SDG/0" class="btn btn-outline-danger">All</a>
+    </p>
+    <p class="float-end mx-2">
+        <a href="/Reports/SDG/1" class="btn btn-outline-secondary">Last Month</a>
+    </p>
+    <p class="float-end mx-2">
+        <a href="/Reports/SDG/3" class="btn btn-outline-warning">Last 3 Month</a>
+    </p>
+    <p class="float-end mx-2">
+        <a href="/Reports/SDG/6" class="btn btn-outline-primary">Last 6 Month</a>
+    </p>
+    <p class="float-end mx-2">
+        <a href="/Reports/SDG/12" class="btn btn-outline-info">Last Year</a>
+    </p>
+</div>
+
+
+
+<div class="card-body">
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <div height="500" id="chart_div"></div>
+    <script>
+              google.charts.load('current', {packages: ['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawBasic);
+
+        function drawBasic() {
+
+              var data = google.visualization.arrayToDataTable([
+                  ['SDG', 'Research', { role: 'style' }],
+        @foreach (var item in Model)
+        {
+            @Html.Raw(string.Format( "['{0}', {1}, 'green']," , item.Name , item.Count,new Random().Next(0x1000000)))
+        }
+
+
+
+               ]);
+
+              var options = {
+                title: 'Al-Mustaqbal Research',
+                chartArea: {height: '100%',width: '50%'},
+
+                height: '800',
+                hAxis: {
+                  title: 'Number Of Research',
+                  minValue: 0
+                },
+                 
+                vAxis: {
+                  title: 'SDG'
+                },
+                colors: ['green']
+              };
+
+              var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+
+              chart.draw(data, options);
+            }
+    </script>
+
+</div> 

@@ -91,6 +91,11 @@ namespace aspcore.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    if (Input.Username == "rusul")
+                    {
+                        _logger.LogInformation("User logged in");
+                        return LocalRedirect("/Order");
+                    }
                     _logger.LogInformation("User logged in");
                     return LocalRedirect(returnUrl);
                 }

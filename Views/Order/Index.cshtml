@@ -1,0 +1,151 @@
+﻿@model IEnumerable<aspcore.Models.ResearchMUS>
+ @{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script>
+     function myFunction(evt){
+       // e.stopImmediatePropagation();
+
+     //   window.history.back();
+        var ids = document.getElementById("list").getAttribute("value") ;
+
+         if(ids== "" || ids== null || ids== undefined){
+           alert("يجرى اختيار بحث");
+           evt.preventDefault();
+         }
+
+
+      }
+     var list = [];
+     function removeItemOnce(arr, value) {
+          var index = arr.indexOf(value);
+          if (index > -1) {
+            arr.splice(index, 1);
+          }
+          return arr;
+        }
+
+
+    function handleClick(cb, id) {
+
+        if(cb.checked ){
+            list.push(id);
+             document.getElementById("list").setAttribute("value" , list.join());
+
+        }else{
+            removeItemOnce(list , id)
+            document.getElementById("list").setAttribute("value" , list.join());
+
+         }
+
+         document.getElementById("selectedRes").innerText = list.length.toString();
+
+
+
+
+     }
+</script>
+<div class="card">
+
+    <div class="card-header">
+        لوحه التحكم
+    </div>
+
+    <div class="card-body">
+        <form method="post" asp-action="set" id="form" enctype="multipart/form-data" onsubmit="myFunction(event)">
+            <input type="text" name="orderNumber" id="orderNumber" required placeholder="رقم الامر الاداري">
+            <input type="Date" name="Date" id="Date" required>
+            <input type="file" id="file" name="file" required />
+            <input type="hidden" name="list" id="list" value="">
+            <input type="submit" value="حفظ">
+
+        </form>
+    </div>
+
+</div>
+
+
+<div class="card col-12 border-0">
+
+
+
+    <div class="card-header">
+        <h3 class="float-start">
+            تم تحديد
+            {
+            <b id="selectedRes">0</b>
+
+            }
+            بحث
+
+        </h3>
+        @*  <p class="float-end">
+            <a asp-action="Create" class="btn btn-primary">Create</a>
+            </p>*@
+    </div>
+
+    <div class="card-body">
+
+        <table id="myTable" class="table px-0">
+            <thead>
+                <tr>
+                    <th class=col-1>
+
+                    </th>
+                    <th class=col-6>
+                        @Html.DisplayNameFor(model => model.title)
+                    </th>
+
+                    <th class="col-2">
+                        @Html.DisplayNameFor(model => model.Names)
+                    </th>
+                    <th class="col-1">
+                        @Html.DisplayNameFor(model => model.uploadDate)
+                    </th>
+
+
+
+                    <th class="col-1">
+                        @Html.DisplayNameFor(model => model.quartile)
+                    </th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 0;
+                }
+                @foreach (var item in Model)
+                {
+                    i++;
+                    <tr>
+                        <td>
+                            <input name="check" type="checkbox" onclick='handleClick(this , @item.Id);' />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.title)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Names)
+
+                        <td>
+                                @Html.DisplayFor(modelItem => item.uploadDate)
+                        </td>
+
+                        <td>
+                                @Html.DisplayFor(modelItem => item.quartile)
+                        </td>
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

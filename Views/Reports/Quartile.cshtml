@@ -1,0 +1,91 @@
+﻿@model aspcore.Models.Reports.QuartileReportModel
+
+@{
+    ViewData["Title"] = "QuartileReportModel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card-header">
+    <h3 class="float-start">Quartile Report</h3>
+    @* <p class="float-end">
+        <a asp-action="Index" class="btn btn-outline-danger">Back</a>
+        </p>*@
+</div>
+
+<div class="card">
+
+
+    <div class="card-body">
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <div style="height: 500px;" id="donutchart"></div>
+        <script type="text/javascript">
+            google.charts.load("current", {packages:["corechart"]});
+            google.charts.setOnLoadCallback(drawChart);
+            function drawChart() {
+              var data = google.visualization.arrayToDataTable([
+                ['Quartile', 'Report'],
+                ['Q1',     @Model.Q1],
+                ['Q2',      @Model.Q2],
+                ['Q3',  @Model.Q3],
+                ['Q4', @Model.Q4]
+              ]);
+
+              var options = {
+                title: 'Total',
+                pieHole: 0.4,
+                is3D: true
+              };
+
+              var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+              chart.draw(data, options);
+            }
+        </script>
+
+    </div>
+</div>
+</br>
+<div class="row">
+    @if (Model.QuartileDepartments != null)
+    {
+
+
+        @foreach (var item in Model.QuartileDepartments)
+        {
+            <div class="card col-md-3 col-12 mx-5 mt-2">
+                <div class="card-header">
+                    @item.Title
+                </div>
+
+                <div class="card-body p-0">
+
+                    <div style="height: 350px;" id="@item.Id"></div>
+                    <script type="text/javascript">
+                        google.charts.load("current", {packages:["corechart"]});
+                        google.charts.setOnLoadCallback(drawChart);
+                        function drawChart() {
+                          var data = google.visualization.arrayToDataTable([
+                            ['Quartile', 'Report'],
+                            ['Q1',     @item.Q1],
+                            ['Q2',      @item.Q2],
+                            ['Q3',  @item.Q3],
+                            ['Q4', @item.Q4]
+                          ]);
+
+                          var options = {
+
+                            pieHole: 0.4,
+
+                          };
+
+                          var chart = new google.visualization.PieChart(document.getElementById("@(item.Id)"));
+                          chart.draw(data, options);
+                        }
+                    </script>
+
+                </div>
+            </div>
+        }
+    }
+</div>

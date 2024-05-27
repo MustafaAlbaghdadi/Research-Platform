@@ -14,7 +14,7 @@ namespace aspcore.Models
         public string? ExtResrchDetail { get; set; }
 
 
-        [Display(Name = "Title")]
+        [Display(Name = "عنوان البحث")]
         public string title { get; set; }
         [Display(Name = "Research Link")]
         public string link { get; set; }
@@ -77,12 +77,15 @@ namespace aspcore.Models
         public string? QRimage { get; set; }
         [Display(Name = "Last UpDate")]
         public DateTime LastUpDate { get; set; }
-        public string checkState { get; set; } // 3 reject, 2 Check Pendding, 1 Admin pending, 0 Complete 
+        public string checkState { get; set; } // 3 IT reject , 2 Check Pendding, 1 Admin pending, 0 Complete ,4 president prining , 5 president Approved , 6 president reject
+        public OrderFormat OrderFormat { get; set; }
+
+
         [Display(Name = "Reason")]
         public string? RejectReason { get; set; }
         [NotMapped]
         public List<RR2tabel> ResearchersList { get; set; }
-        [Display(Name = "Total Amount")]
+        [Display(Name = "المبلغ")]
 
         public long? totalMoney { get; set; }
 
@@ -91,7 +94,7 @@ namespace aspcore.Models
         public List<string> SDGList { get; set; }
         [Display(Name = "Human Department")]
         public bool? scopusHumanDepartment { get; set; }
-        [Display(Name = "Names")]
+        [Display(Name = "اسماء الباحثين")]
         public string? Names { get; set; }
 
         [Display(Name = "Amounts")]
@@ -120,10 +123,24 @@ namespace aspcore.Models
         [Display(Name = "Order Date.")]
         public DateTime OrderDate { get; set; }
         [Display(Name = "Order File.")]
-        public string OrderFile { get; set; }
+        public string OrderFile { get; set; }   
+        
+        [Display(Name = "توصية من الشؤون العلمية")]
+        public string? ScientificrRcommendation { get; set; }
+        [Display(Name = "الاستمارة")]
+        public string? ResFormId { get; set; } 
+        [Display(Name = "عدد مرات الطباعة")]
+        public int PrintCount { get; set; }
 
     }
 
+    public enum OrderFormat
+    {
+        ScopusCheckout,// صرف مبلغ
+        ScopusSettlement,// تسوية
+    }
+
+    
 
 
 }

@@ -86,6 +86,30 @@ namespace aspcore.Controllers
 
         }
 
+
+        [HttpGet("/api/IsExist")]
+        public async Task<ActionResult> isExist([FromQuery] string search = "")
+        {
+           
+                var resault = await _context.ResearchMUS.AnyAsync(item => (item.checkState != "1") && item.title.Contains(search));
+                if (resault)
+                {
+                    return Ok(true);
+                }
+                else if (await _context.Conferences.AnyAsync(item => (item.Status  != Models.ConferenceStatus.pending) && item.Title.Contains(search)))
+                {
+                    return Ok(true);
+                }
+
+                 return Ok(false);
+            
+        
+
+
+
+
+        }
+
         [HttpGet("/Api/ResDetails")]
         public async Task<ActionResult> ResDetailsList([FromQuery] string search = "")
         {

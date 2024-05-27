@@ -1,0 +1,118 @@
+﻿@using System.Text.RegularExpressions
+@using aspcore.Models.Shared
+@model aspcore.Models.ResearchMUS
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "";
+
+}
+@{
+}
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<style>
+    * {
+        font-family: 'Times New Roman';
+    }
+</style>
+<h2 style="text-align: center; font-weight:600; ">
+    أمر جامعي
+</h2>
+
+@{
+
+    static string AddCommaBefore000(string number)
+    {
+        string numberString = number;
+        int length = numberString.Length;
+
+        // Insert comma before every "000" starting from the end
+        for (int i = length - 3; i > 0; i -= 3)
+        {
+            numberString = numberString.Insert(i, ",");
+        }
+
+        return numberString;
+    }
+    string name = Model.Names.Split('\n')[0];
+    string dep = Model.Departments.Split('\n')[0];
+    string price = AddCommaBefore000(Model.totalMoney.ToString());
+
+}
+<h3 dir="rtl" style=" margin-top:30px;line-height:32px; font-weight:400;">
+
+    استنادا الى الصلاحيات المخولة لنا .. بموجب احكام المادة (36) الفقرة ( ثانيا - ب ) من قانون التعليم الاهلي رقم (25) لسنة 2016 , وبناء على ما جاء بأحكام المادة (13) من نظام العمل واللائحة المالية , تقرر مايلي :
+    <br />
+    تسوية مبلغ قدره  <b>(@price  دينار عراقي)</b>  للباحث <b>(@name / @dep) </b> لدعم البحوث العلمية المنشورة (باسم الجامعة) في المجلات العلمية الرصينة  بعنوان .
+
+    <p style="text-align:center;  font-weight:800;">
+        ( @Model.title	)
+    </p>
+    <br />
+
+</h3>
+
+
+<div style="padding-left:25px;margin-top:75px;width:200px; text-align:center">
+    <h2>الاستاذ الدكتور</h2>
+    <h2>حسن شــاكر مجدي</h2>
+    <h2>رئيس الجامعة</h2>
+</div>
+
+<div style="display:block;">
+
+    <div style="float:left; padding-top:25px; padding-left:50px;">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=@Model.ResFormId" />
+    </div>
+    <div style="text-align:right;font-size:14px">
+
+
+        <h3 style="text-decoration: underline;">:نسخة منه الى </h3>
+        <p>
+            مكتب السيد رئيس الجامعة / للتفضل بالاطلاع .. مع التقدير
+            -
+        </p>
+        <p>
+            شعبة الحاضنه التكنلوجيه .. مع التقدير
+            -
+        </p>
+        <p>
+            قسم الشؤون العلمية .. مع التقدير
+            -
+        </p>
+        <p>
+            شعبة الحسابات والشؤون المالية  .. لاتخاذ مايلزم
+            -
+        </p>
+        <p>
+            شعبة الرقابة والتدقيق
+            -
+        </p>
+        <p>
+            شعبة الشؤون الادارية / وحدة الصادر والوارد /مع الاوليات
+            -
+        </p>
+        <p>
+            شعبة الموارد البشرية / الاضبارة الشخصية
+            -
+        </p>
+        <p>
+            @dep
+            -
+        </p>
+
+    </div>
+
+
+
+</div>
+

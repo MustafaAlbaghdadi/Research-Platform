@@ -1,18 +1,74 @@
-﻿@model IEnumerable<aspcore.Models.ResearchMUS>
+﻿@using aspcore.Models.Shared
+@model IEnumerable<aspcore.Models.ResearchMUS>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{
+    Microsoft.Extensions.Primitives.StringValues queryVal;
+    var m = Context.Request.Query.TryGetValue("Select", out queryVal);
+}
 
-<div class="card col-12 border-0">
+<div dir="rtl" class="card col-12 border-0">
 
 
     <div class="card-header">
-        <h3 class="float-start">Review Researches</h3>
-      @*  <p class="float-end">
-            <a asp-action="Create" class="btn btn-primary">Create</a>
-        </p>*@
+        <h3 class="float-end">البحوث</h3>
+        <div class="float-start">
+            @if (User.IsInRole(UserType.Admin))
+            {
+                <form id="statusSelect" asp-action="index" method="get">
+                    <select name="select" Se="5" class="form-select" aria-label="Default select example" onchange="{
+                    document.getElementById('statusSelect').submit();
+
+}">
+                        @{
+                            switch (queryVal)
+                            {
+                                case "1":
+                                                    <option selected value="1">في الانتظار</option>
+                                                    <option value="4">الرئاسه - طباعة</option>
+                                                    <option value="5">الرئاسة - موافقة</option>
+                                                    <option value="6">الرئاسة - رفض</option>
+                                    break;
+                                case "4":
+                                                    <option value="1">في الانتظار</option>
+                                                    <option selected value="4">الرئاسه - طباعة</option>
+                                                    <option value="5">الرئاسة - موافقة</option>
+                                                    <option value="6">الرئاسة - رفض</option>
+                                    break;
+                                case "5":
+                                                    <option value="1">في الانتظار</option>
+                                                    <option value="4">الرئاسه - طباعة</option>
+                                                    <option selected value="5">الرئاسة - موافقة</option>
+                                                    <option value="6">الرئاسة - رفض</option>
+                                    break;
+                                case "6":
+                                                    <option value="1">في الانتظار</option>
+                                                    <option value="4">الرئاسه - طباعة</option>
+                                                    <option value="5">الرئاسة - موافقة</option>
+                                                    <option selected value="6">الرئاسة - رفض</option>
+                                    break;
+                                default:
+                                                    <option value="1">في الانتظار</option>
+                                                    <option value="4">الرئاسه - طباعة</option>
+                                                    <option value="5">الرئاسة - موافقة</option>
+                                                    <option value="6">الرئاسة - رفض</option>
+                                    break;
+
+                            }
+
+                        }
+
+
+                    </select>
+                </form>
+
+            }
+
+
+        </div>
     </div>
 
     <div class="card-body">
@@ -23,34 +79,62 @@
                     <th class=col-1>
 
                     </th>
-                    <th class=col-6>
+                    <th class=col-4>
                         @Html.DisplayNameFor(model => model.title)
                     </th>
 
-                    <th class="col-2">
-                        @Html.DisplayNameFor(model => model.published)
-                    </th>
-                    <th class="col-1">
-                        @Html.DisplayNameFor(model => model.uploadDate)
-                    </th>
+                    @if (User.IsInRole(UserType.Admin))
+                    {
+                        <th class="col-2">
 
+                            @Html.DisplayNameFor(model => model.published)
+                        </th>
+                        <th class="col-1">
+                            @Html.DisplayNameFor(model => model.quartile)
+                        </th>
+                        <th class="col-1">
+                            @Html.DisplayNameFor(model => model.uploadDate)
+                        </th>
+                    }
+                    else
+                    {
+                        <th class="col-2">
 
+                            @Html.DisplayNameFor(model => model.Names)
+                        </th>
+                        <th class="col-1">
+                            @Html.DisplayNameFor(model => model.totalMoney)
+                        </th>
 
-                    <th class="col-1">
-                        @Html.DisplayNameFor(model => model.quartile)
-                    </th>
+                        <th class="col-1">
+                            @Html.DisplayNameFor(model => model.PrintCount)
+                        </th>
 
-                    <th class="col-1"></th>
+                    }
+                    <th class="col-3"></th>
                 </tr>
             </thead>
             <tbody>
                 @{
                     int i = 0;
+                    var pritClass = "";
                 }
                 @foreach (var item in Model)
                 {
                     i++;
-                    <tr>
+
+                    if (item.PrintCount > 0)
+                    {
+                        pritClass = "text-success";
+                    }
+                    else
+                    {
+                        pritClass = "";
+
+                    }
+
+
+                    <tr class="@pritClass" >
                         <td>
                             @(i.ToString())
                         </td>
@@ -58,23 +142,101 @@
                             @Html.DisplayFor(modelItem => item.title)
                         </td>
 
-                        <td>
-                            @(item.published== "0"? "منشور" : "منشور ومفهرس")
-@*                            @Html.DisplayFor(modelItem => item.published== "0"? "منشور" : "منشور ومفهرس")
-*@                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.uploadDate)
-                        </td>
 
-                        <td>
-                            @Html.DisplayFor(modelItem => item.quartile)
-                        </td>
 
-                        <td>
-                         @*   <a class="btn btn-outline-info" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                            <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
-*@                            <a class="btn btn-outline-danger" asp-action="Review" asp-route-id="@item.Id">Review</a>
-                        </td>
+                        @if (User.IsInRole(UserType.Admin))
+                        {
+                            <td>
+                                @(item.published == "0" ? "منشور" : "منشور ومفهرس")
+                                @*                            @Html.DisplayFor(modelItem => item.published== "0"? "منشور" : "منشور ومفهرس")
+                        *@
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.quartile)
+                            </td>
+                            <td>
+                                @item.uploadDate.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                <a class="btn btn-outline-danger" asp-action="Review" asp-route-id="@item.Id">Review</a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="col-2">
+
+                                @Html.DisplayFor(modelItem => item.Names)
+                            </td>
+                            <td class="col-1">
+                                @Html.DisplayFor(modelItem => item.totalMoney)
+                            </td>
+                            <td>
+                                @item.PrintCount
+                            </td>
+
+
+
+                            <td class="text-center ">
+                                <a class="btn btn-outline-secondary" asp-action="print" asp-route-id="@item.Id">طباعة</a>
+
+                                <a class="btn btn-outline-info" onclick="{
+var res = confirm('هل تم توقيع الكتاب من رئيس الجامعة ؟');
+                                    if(!res){
+                                    return false;
+}
+
+}" asp-action="PresidentAprove" asp-route-id="@item.Id">موافق</a>
+
+
+
+
+                                <form id="reviewForm" class="d-inline" method="get" action="/ResearchMUS/presednetReject" >
+                                    <!-- Other form fields can go here -->
+
+                                    <input type="hidden" id="rejectReasonInput" name="rejectReason">
+                                    <input type="hidden" id="id" name="id" value="@item.Id">
+
+                                    <!-- Button to trigger the prompt -->
+                                    <input type="button" class="btn btn-outline-danger" value="رفض" onclick="handleRejectClick()">
+                                </form>
+
+                                <script>
+                                    function handleRejectClick() {
+                                        // Prompt the user for the reason
+                                        var res = prompt('يرجى كتابة سبب الرفض');
+
+                                        // Check if the response is not null or empty
+                                        if (res != null && res.trim() !== '') {
+                                            // Set the hidden input value
+                                            document.getElementById('rejectReasonInput').value = res;
+
+                                            // Submit the form
+                                            document.getElementById('reviewForm').submit();
+                                        } else {
+                                            // Do nothing if the response is invalid
+                                            return false;
+                                        }
+                                    }
+                                </script>
+
+
+
+
+
+
+                            </td>
+
+                        }
+
+
+
+
+
+
+
+
+
                     </tr>
                 }
             </tbody>

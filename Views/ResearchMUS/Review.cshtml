@@ -80,7 +80,16 @@
     <br />
 
     <br />
+    <div class="row text-center">
+        <div class="alert alert-success">
+            <h4 class="m-0">
+                @Model.totalMoney:المبلغ الكلي
+            </h4>
+        </div>
+     
+    
 
+    </div>
     <div class="row">
         <div class="col-12 col-sm-7">
 
@@ -96,7 +105,7 @@
                     @Html.DisplayNameFor(model => model.published)
                 </dt>
                 <dd class="col-sm-10">
-                    @(Model.published== "0"? "منشور" : "منشور ومفهرس")
+                    @(Model.published == "0" ? "منشور" : "منشور ومفهرس")
                 </dd>
                 <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.pubDate)
@@ -184,6 +193,21 @@
                 <dd class="col-sm-10">
                     @Html.DisplayFor(model => model.ImpactFacter)
                 </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ScientificrRcommendation)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ScientificrRcommendation)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ResFormId)
+                </dt>
+                <dd class="col-sm-10">
+                    <a target="_blank" href="@Model.ResFormId">
+                        رابط الاستمارة
+                    </a>
+                </dd>
+
 
             </dl>
 
@@ -236,7 +260,7 @@
                     </dd>
                 }
 
-                
+
                 @if (Model.attachedFile2 != null && !string.IsNullOrWhiteSpace(Model.attachedFile2))
                 {
 
@@ -251,7 +275,7 @@
                     </dd>
                 }
 
-                 @if (Model.attachedFile3 != null && !string.IsNullOrWhiteSpace(Model.attachedFile3))
+                @if (Model.attachedFile3 != null && !string.IsNullOrWhiteSpace(Model.attachedFile3))
                 {
 
                     <dt class="col-sm-3">
@@ -265,8 +289,8 @@
                     </dd>
                 }
 
-                
-                 @if (Model.attachedFile4 != null && !string.IsNullOrWhiteSpace(Model.attachedFile4))
+
+                @if (Model.attachedFile4 != null && !string.IsNullOrWhiteSpace(Model.attachedFile4))
                 {
 
                     <dt class="col-sm-3">
@@ -350,7 +374,11 @@
 
     </div>
     <center>
+
         <a target="_blank" href="http://res.uomus.edu.iq/showForm.aspx?res=@(Model.Id)&pass=@(Model.Id*2)" class="btn btn-primary">عرض الاستمارة</a>
+        <a target="_blank" href="/ResearchMUS/OrderPrint/@Model.Id" class="btn btn-primary">امر صرف</a>
+        <a target="_blank" href="/ResearchMUS/ScopusSettlementPrint/@Model.Id" class="btn btn-primary">امر تسوية</a>
+
     </center>
 
     <br />
@@ -379,7 +407,7 @@
         </div>
 
         <div class="col-2 text-center d-sm-block d-none">
-            <img src="https://uomus.edu.iq/assetsv2/img/logofooter.png" />
+            <img width="150" src="https://uomus.edu.iq/assetsv2/img/logofooter.png" />
         </div>
 
 
@@ -391,48 +419,91 @@
 
             </div>
             <div class="card-body">
-                <form asp-action="Approve">
-                    <input type="hidden" asp-for="Id" />
-
-                    @* <div class="form-group">
-                        <label asp-for="SDGList" class="control-label"></label>
-
-                        <select asp-for="SDGList" style=" text-align-last: right;"  class="selectpicker form-control mt-2  " multiple data-live-search="true">
-                        <option style="text-align:right"  value="1">الهدف 1– القضاء على الفقر</option>
-                        <option style="text-align:right"  value="2">الهدف 2 – القضاء التام على الجوع</option>
-                        <option style="text-align:right"  value="3">الهدف 3 – الصحة الجيدة والرفاه</option>
-                        <option style="text-align:right"  value="4">الهدف 4 – التعليم الجيد</option>
-                        <option style="text-align:right"  value="5">الهدف 5 – المساواة بين الجنسين</option>
-                        <option style="text-align:right"  value="6">الهدف 6 – المياه النظيفة والنظافة الصحية</option>
-                        <option style="text-align:right"  value="7">الهدف 7– طاقة نظيفة وبأسعار معقولة</option>
-                        <option style="text-align:right"  value="8">الهدف 8– العمل اللائق ونمو الاقتصاد</option>
-                        <option style="text-align:right"  value="9">الهدف 9– الصناعة والابتكار والبنية التحتية</option>
-                        <option style="text-align:right"  value="10">الهدف 10– الحد من أوجه عدم المساواة</option>
-                        <option style="text-align:right"  value="11">الهدف 11– مدن ومجتمعات محلية مستدامة</option>
-                        <option style="text-align:right"  value="12">الهدف 12– الاستهلاك والإنتاج المسؤولان</option>
-                        <option style="text-align:right"  value="13">الهدف 13– العمل المناخي</option>
-                        <option style="text-align:right"  value="14">الهدف 14– الحياة تحت الماء</option>
-                        <option style="text-align:right"  value="15">الهدف 15– الحياة في البرّ</option>
-                        <option style="text-align:right"  value="16">الهدف 16– السلام والعدالة والمؤسسات القوية</option>
-                        <option style="text-align:right"  value="17">الهدف 17– عقد الشراكة لتحقيق الأهداف</option>
-                        </select>
 
 
-                        <span asp-validation-for="SDGList" class="text-danger"></span>
-                        </div>
+                @{
 
-                        <br />
-                        <div class="form-group">
-                        <label asp-for="totalMoney" class="control-label"></label>
-                        <input required asp-for="totalMoney" class="form-control mt-2" type="number"></input>
-                        <span asp-validation-for="totalMoney" class="text-danger"></span>
-                        </div>*@
 
-                    <br />
-                    <center>
-                        <input type="submit" value="Approve" class="btn btn-primary" />
-                    </center>
-                </form>
+                    switch (Model.checkState)
+                    {
+                        case "5":// upload Order File
+                            <form asp-action="Approve" enctype="multipart/form-data">
+                                <input type="hidden" asp-for="Id" />
+
+                                <br/>
+                                <center>
+                                    <input type="file" id="OrderFile" name="OrderFile" required />
+
+                                    <input type="submit" value="Approve" class="btn btn-primary" />
+                                </center>
+                            </form>
+
+
+                            break;
+
+                        case "1":
+                            <form asp-action="ITApprove" dir="rtl" >
+                                <input type="hidden" asp-for="Id" />
+                                <label asp-for="OrderFormat" >فورمة الامر الجامعي</label>
+                                <select class="form-select form-select-lg mb-3 text-center" asp-for="OrderFormat">
+                                 <option value="@OrderFormat.ScopusCheckout">امر صرف</option>
+                                    <option value="@OrderFormat.ScopusSettlement">تسوية</option>
+                                </select>
+
+                                <br />
+                                <label asp-for="totalMoney">المبلغ</label>
+
+                                <input class="form-control"  asp-for="totalMoney" />
+                                <br/>
+                                <center>
+                                    <input type="submit" value="الرئاسة - طباعة" class="btn btn-primary" />
+                                </center>
+                            </form>
+
+
+
+
+                            <form asp-action="DirectApprove" dir="rtl">
+                                <input type="hidden" asp-for="Id" />
+
+                               
+
+                               
+                                <br />
+                                <br />
+                                <hr />
+                                <br />
+                                <center>
+                                    <input type="submit" value="موافقة مباشرة" class="btn btn-danger" />
+                                </center>
+                            </form>
+                            break;
+
+                        case "6":// rejected resubmit
+                            <form asp-action="ITApprove" dir="rtl">
+                                <input type="hidden" asp-for="Id" />
+                                <label asp-for="OrderFormat">فورمة الامر الجامعي</label>
+                                <select class="form-select form-select-lg mb-3 text-center" asp-for="OrderFormat">
+                                    <option value="@OrderFormat.ScopusCheckout">امر صرف</option>
+                                    <option value="@OrderFormat.ScopusSettlement">تسوية</option>
+                                </select>
+
+                                <br />
+                                <label asp-for="totalMoney">المبلغ</label>
+
+                                <input class="form-control" asp-for="totalMoney" />
+                                <br />
+                                <center>
+                                    <input type="submit" value="الرئاسة - طباعة" class="btn btn-primary" />
+                                </center>
+                            </form>
+                            break;
+                    }
+                }
+
+
+                
+
             </div>
         </div>
     </div>

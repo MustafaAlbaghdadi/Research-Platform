@@ -12,7 +12,7 @@ using aspcore.Models.Shared;
 
 namespace aspcore.Controllers
 {
-    [Authorize(Roles = UserType.Admin)]
+    [Authorize]
     public class ResearchMUSController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,10 +22,18 @@ namespace aspcore.Controllers
             _context = context;
         }
 
+
+
+
         // GET: ResearchMUS
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] int select = 1)
         {
-            return View(await _context.ResearchMUS.Where(item => item.checkState == "1" && item.viewlvl != 0).ToListAsync());
+            if (User.IsInRole(UserType.President))
+            {
+                return View(await _context.ResearchMUS.Where(item => item.checkState == "4" && item.viewlvl != 0).ToListAsync());
+            }
+            return View(await _context.ResearchMUS.Where(item => item.checkState == select.ToString() && item.viewlvl != 0).ToListAsync());
+
         }
 
 
@@ -58,7 +66,7 @@ namespace aspcore.Controllers
         }
         public async Task<List<ResearchMUS>> qetQuery(ReasearchFilter visaFilter)
         {
-            var query = _context.ResearchMUS.Where(item => item.viewlvl == 1);
+            var query = _context.ResearchMUS.Where(item => item.viewlvl == 1 && item.checkState == "0");
 
             if (visaFilter.QuarterSelected > 0)
             {
@@ -419,6 +427,24 @@ namespace aspcore.Controllers
                 researchMUS.ResearchersList = ResearchersList;
             }
 
+            if (string.IsNullOrWhiteSpace(researchMUS.Departments))
+            {
+                var rrts = await _context.RR2tabel.Where(item => item.ResearchId == researchMUS.Id).ToListAsync();
+                researchMUS.Names = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherArName).ToList());
+                researchMUS.Amounts = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherMoney).ToList());
+                researchMUS.Degrees = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherDeg).ToList());
+                List<string> deplist = new List<string>();
+                foreach (var item in rrts)
+                {
+                    deplist.Add(item.ResearcherDept);
+
+                }
+                researchMUS.Departments = String.Join(Environment.NewLine, deplist);
+ 
+                _context.SaveChanges();
+            }
+           
+
             if (researchMUS == null)
             {
                 return NotFound();
@@ -473,15 +499,150 @@ namespace aspcore.Controllers
 
 
 
+        [HttpPost, ActionName("DirectApprove")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DirectApprove(long id)
+        {
+
+            string OrderUrl = "https://resadmin.uomus.edu.iq";//todo 
+            if (_context.ResearchMUS == null  )
+            {
+                return Problem("Entity set 'ApplicationDbContext.ResearchMUS'  is null.");
+            }
+
+        
+ 
+  
+            var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == id && item.viewlvl == 1);
+            if (researchMUS != null)
+            {
+
+                researchMUS.OrderDate = DateTime.Now;
+ 
+                // researchMUS.SDGtype = ","+string.Join(',' , SDGList)+",";
+                researchMUS.checkState = "0";
+                researchMUS.LastUpDate = DateTime.Now;
+                //researchMUS.totalMoney = TotalPrice;
+                var rrts = await _context.RR2tabel.Where(item => item.ResearchId == researchMUS.Id).ToListAsync();
+                researchMUS.Names = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherArName).ToList());
+                researchMUS.Amounts = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherMoney).ToList());
+                researchMUS.Degrees = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherDeg).ToList());
+
+
+                List<string> deplist = new List<string>();
+                foreach (var item in rrts)
+                {
+                    deplist.Add(item.ResearcherDept);
+
+                }
+                researchMUS.Departments = String.Join(Environment.NewLine, deplist);
+            }
+
+            await _context.SaveChangesAsync();
+            //try
+            //{
+            //    System.Net.WebClient wc = new System.Net.WebClient();
+            //    wc.DownloadString(researchMUS.ResFormId + $"?secret=kjhadbfkgdbfhgadfgadbfgadfkjasdkvbhc&status=5&orderurl={OrderUrl}");
+
+            //}
+            //catch
+            //{
+
+
+            //}
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
         // POST: ResearchMUS/Delete/5
         [HttpPost, ActionName("Approve")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Approve(long id)
+        public async Task<IActionResult> Approve(long id, IFormFile OrderFile)
+        {
+
+            string OrderUrl = "https://resadmin.uomus.edu.iq";//todo 
+            if (_context.ResearchMUS == null || OrderFile == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.ResearchMUS'  is null.");
+            }
+
+            if (OrderFile.ContentType != "application/pdf")
+            {
+                return BadRequest();
+            }
+
+            string rootDir = System.IO.Directory.GetCurrentDirectory() + @"\Files\";
+            if (!System.IO.Directory.Exists(rootDir))
+            {
+                System.IO.Directory.CreateDirectory(rootDir);
+            }
+            string fileName = Guid.NewGuid().ToString() + ".pdf";
+            string filePath = Path.Combine(rootDir, fileName);
+
+
+            using (Stream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            {
+                OrderFile.CopyTo(fileStream);
+            }
+
+            string relativePath = "/Files/" + fileName;
+            OrderUrl += relativePath;
+
+            var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == id && item.viewlvl == 1);
+            if (researchMUS != null)
+            {
+
+                researchMUS.OrderDate = DateTime.Now;
+                researchMUS.OrderFile = relativePath;
+
+                // researchMUS.SDGtype = ","+string.Join(',' , SDGList)+",";
+                researchMUS.checkState = "0";
+                researchMUS.LastUpDate = DateTime.Now;
+                //researchMUS.totalMoney = TotalPrice;
+                var rrts = await _context.RR2tabel.Where(item => item.ResearchId == researchMUS.Id).ToListAsync();
+                researchMUS.Names = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherArName).ToList());
+                researchMUS.Amounts = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherMoney).ToList());
+                researchMUS.Degrees = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherDeg).ToList());
+
+
+                List<string> deplist = new List<string>();
+                foreach (var item in rrts)
+                {
+                    deplist.Add(item.ResearcherDept);
+
+                }
+                researchMUS.Departments = String.Join(Environment.NewLine, deplist);
+            }
+
+            await _context.SaveChangesAsync();
+            try
+            {
+                System.Net.WebClient wc = new System.Net.WebClient();
+                wc.DownloadString(researchMUS.ResFormId + $"?secret=kjhadbfkgdbfhgadfgadbfgadfkjasdkvbhc&status=5&orderurl={OrderUrl}");
+
+            }
+            catch
+            {
+
+
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        [HttpPost, ActionName("ITApprove")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ITApprove(ResearchMUS research)
         {
             if (_context.ResearchMUS == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.ResearchMUS'  is null.");
             }
+
+
             //foreach (var researchMUS in _context.ResearchMUS.Where(item => item.viewlvl == 1).ToList())
             //{
             //    researchMUS.checkState = "0";
@@ -503,11 +664,12 @@ namespace aspcore.Controllers
             //}
 
 
-            var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == id && item.viewlvl == 1);
+            var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == research.Id && item.viewlvl == 1);
             if (researchMUS != null)
             {
                 // researchMUS.SDGtype = ","+string.Join(',' , SDGList)+",";
-                researchMUS.checkState = "0";
+                researchMUS.checkState = "4";
+                researchMUS.PrintCount = 0;
                 researchMUS.LastUpDate = DateTime.Now;
                 //researchMUS.totalMoney = TotalPrice;
                 var rrts = await _context.RR2tabel.Where(item => item.ResearchId == researchMUS.Id).ToListAsync();
@@ -523,12 +685,78 @@ namespace aspcore.Controllers
 
                 }
                 researchMUS.Departments = String.Join(Environment.NewLine, deplist);
-
-
-
+                researchMUS.totalMoney = research.totalMoney;
+                researchMUS.OrderFormat = research.OrderFormat;
             }
 
             await _context.SaveChangesAsync();
+            try
+            {
+                System.Net.WebClient wc = new System.Net.WebClient();
+                wc.DownloadString(researchMUS.ResFormId + $"?secret=kjhadbfkgdbfhgadfgadbfgadfkjasdkvbhc&status=4");
+
+            }
+            catch
+            {
+                return RedirectPermanent(researchMUS.ResFormId + $"?secret=kjhadbfkgdbfhgadfgadbfgadfkjasdkvbhc&status=4");
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+        public async Task<ActionResult> PrintAsync(long id)
+
+        {
+            var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == id && item.viewlvl == 1);
+            researchMUS.PrintCount += 1;
+            _context.SaveChanges();
+            switch (researchMUS.OrderFormat)
+            {
+                case OrderFormat.ScopusCheckout:
+                    return Redirect("/ResearchMUS/OrderPrint/" + id);
+                    break;
+                case OrderFormat.ScopusSettlement:
+                    return Redirect("/ResearchMUS/ScopusSettlementPrint/" + id);
+
+                    break;
+                default:
+                    break;
+            }
+            return View();
+        }
+
+
+        public async Task<ActionResult> OrderPrintAsync(long id)
+        {
+            var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == id && item.viewlvl == 1);
+
+            return View(researchMUS);
+        }
+
+        public async Task<ActionResult> ScopusSettlementPrintAsync(long id)
+        {
+            var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == id && item.viewlvl == 1);
+
+            return View(researchMUS);
+        }
+
+        public async Task<ActionResult> PresidentAprove(long id)
+        {
+            var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == id && item.viewlvl == 1);
+            researchMUS.checkState = "5";
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<ActionResult> presednetReject(long id, string rejectReason)
+        {
+            var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == id && item.viewlvl == 1);
+            researchMUS.RejectReason = rejectReason;
+            researchMUS.checkState = "6";
+            _context.SaveChanges();
+
             return RedirectToAction(nameof(Index));
         }
 

@@ -4,7 +4,8 @@
     {
         public const string Admin = "ADMIN";
         public const string Client = "CLIENT";
-
+        public const string President = "PRESIDENT";
+ 
 
 
     }

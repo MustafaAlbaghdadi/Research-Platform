@@ -1,6 +1,6 @@
 ﻿@using System.Text.RegularExpressions
 @using aspcore.Models.Shared
-@model aspcore.Models.ResearchMUS
+@model aspcore.Models.Conference
 
 @{
     ViewData["Title"] = "Index";
@@ -20,7 +20,7 @@
 <br />
 <br />
 <style>
-    *{
+    * {
         font-family: 'Times New Roman';
     }
 </style>
@@ -45,17 +45,18 @@
     }
     string name = Model.Names.Split('\n')[0];
     string dep = Model.Departments.Split('\n')[0];
-    string price = AddCommaBefore000(Model.totalMoney.ToString());
+    string price = AddCommaBefore000(Model.TotalAmount.ToString());
+    string type = $"ال{Model.Type}ة";
 
 }
 <h3 dir="rtl" style=" margin-top:30px;line-height:32px; font-weight:400;">
 
     استنادا الى الصلاحيات المخولة لنا .. بموجب احكام المادة (36) الفقرة ( ثانيا - ب ) من قانون التعليم الاهلي رقم (25) لسنة 2016 , وبناء على ما جاء بأحكام المادة (13) من نظام العمل واللائحة المالية , تقرر مايلي :
     <br />
-    صرف مبلغ قدره  <b>(@price  دينار عراقي)</b>  للباحث <b>(@name / @dep) </b> لدعم البحوث العلمية المنشورة (باسم الجامعة) في المجلات العلمية الرصينة (Scopus Q<span>@Model.quartile</span>)  بعنوان :
+    تسوية مبلغ قدره  <b>(@price  دينار عراقي)</b>  للباحث <b>(@name / @dep) </b> لدعم النشر العلمي  (باسم الجامعة) في المؤتمرات @type الرصينة   بعنوان :
 
     <p style="text-align:center;  font-weight:800;">
-        ( @Model.title	)
+        ( @Model.ResearchTitle	)
     </p>
     <br />
 
@@ -71,9 +72,9 @@
 <div style="display:block;">
 
     <div style="float:left; padding-top:25px; padding-left:50px;">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://res.uomus.edu.iq/showForm.aspx?res=@(Model.Id)%26pass=@(Model.Id*2)" />
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://res.uomus.edu.iq/ConferenceForm.aspx?res=@(Model.ID)%26pass=@(Model.ID*2)" />
     </div>
-    <div style="text-align:right;font-size:11px">
+    <div style="text-align:right;font-size:14px">
 
 
         <h3 style="text-decoration: underline;">:نسخة منه الى </h3>
@@ -106,13 +107,13 @@
             -
         </p>
         <p>
-            @dep  
+            @dep
             -
         </p>
 
     </div>
 
 
-    
+
 </div>
 

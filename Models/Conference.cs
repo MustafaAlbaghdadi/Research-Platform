@@ -40,21 +40,15 @@ namespace aspcore.Models
         [Display(Name = "Acknowledge")]
         public bool Acknowledge { get; set; }
         [Display(Name = "Total Amount")]
-
         public int TotalAmount { get; set; }
-
-
         [Display(Name = "Create Date")]
         public DateTime CreateDate { get; set; }
-
         [Display(Name = "Last Update")]
         public DateTime LastUpdate { get; set; }
         [Display(Name = "Status")]
         public ConferenceStatus Status { get; set; }
-
         [Display(Name = "Reject Reson")]
         public string? RejectReson { get; set; }
-
         [Display(Name = "Uploader")]
         public string UploaderEmail { get; set; }
         public string QRImage { get; set; }
@@ -62,15 +56,29 @@ namespace aspcore.Models
         public string? ResearchLink { get; set; }
         [Display(Name = "Names")]
         public string? Names { get; set; }
-
         [Display(Name = "Amounts")]
         public string? Amounts { get; set; }
-
         [Display(Name = "Degrees")]
-
         public string? Degrees { get; set; }
         [Display(Name = "Departments")]
         public string? Departments { get; set; }
+        [NotMapped]
+        public List<ConferenceResearch> ConferenceResearchesList { get; set; } = new List<ConferenceResearch>();
+        [Display(Name = "Order File.")]
+        public string OrderFile { get; set; }= string.Empty;
+        [Display(Name = "عدد مرات الطباعة")]
+        public int PrintCount { get; set; }
+        public OrderFormat OrderFormat { get; set; }
+        [Display(Name = "توصية من الشؤون العلمية")]
+        public string? ScientificrRcommendation { get; set; }
+        [Display(Name = "الاستمارة")]
+        public string? ResFormId { get; set; }
+        [Display(Name = "Order Num.")]
+        public string OrderNumber { get; set; }
+        [Display(Name = "Order Date.")]
+        public DateTime OrderDate { get; set; }
+        [Display(Name = "رقم الوصل")]
+        public int InvoiceId { get; set; } 
     }
 
     public enum ConferenceStatus
@@ -79,7 +87,12 @@ namespace aspcore.Models
         pending,// موافقه اولية من رسل
         Checking,// تم الرفع من الاقسام
         Rejected,// مرفوض من د طارق
-        Archive//  تم المسح
+        Archive,//  تم المسح
+        PresidentPrint,
+        PresidentAproved,
+        PresidentReject,
+        ITApprove,
+        Finincer
 
     }
 

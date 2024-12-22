@@ -11,8 +11,8 @@
     <div class="card-header">
         <h3 class="float-start">Archive Researches</h3>
         @*  <p class="float-end">
-            <a asp-action="Create" class="btn btn-primary">Create</a>
-            </p>*@
+        <a asp-action="Create" class="btn btn-primary">Create</a>
+        </p>*@
     </div>
 
 
@@ -199,12 +199,15 @@
                     <th class="col-1">
                         @Html.DisplayNameFor(model => model.Degrees)
                     </th>
+                    <th class="col-1">
+                        @Html.DisplayNameFor(model => model.checkState)
+                    </th>
 
 
 
                     <th class="col-1">
                         @Html.DisplayNameFor(model => model.Departments)
-                    </th> 
+                    </th>
                     <th class="col-1">
                         @Html.DisplayNameFor(model => model.Amounts)
                     </th>
@@ -305,15 +308,19 @@
                         </td>
 
                         <td>
+                            @item.CheckStateToString(item.checkState)
+                        </td>
+
+                        <td>
                             @Html.DisplayFor(modelItem => item.Departments)
-                        </td> 
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Amounts)
                         </td>
 
 
                         <td>
-                            @(item.published== "0"? "منشور" : "منشور ومفهرس")
+                            @(item.published == "0" ? "منشور" : "منشور ومفهرس")
                         </td>
 
 
@@ -380,8 +387,8 @@
 
                         <td>
                             @*   <a class="btn btn-outline-info" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                            *@
+                        <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        *@
                             <a class="btn btn-outline-danger" asp-action="ArchiveReview" asp-route-id="@item.Id">Detalis</a>
                         </td>
                     </tr>

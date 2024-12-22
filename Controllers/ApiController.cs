@@ -1,4 +1,5 @@
 ﻿using aspcore.Data;
+using aspcore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,6 +34,47 @@ namespace aspcore.Controllers
 
         }
 
+        [HttpGet("Api/Profile/{id}")]
+        public async Task<ActionResult> Profle([FromRoute] int id)
+        {
+            var list = new List<ResViewModel>();
+            try
+            {
+                list = await (from res in _context.ResearchMUS join tech in _context.RR2tabel on res.Id equals tech.ResearchId where tech.ResearcherId == id select new ResViewModel { Title = res.title, Link = res.link, ScopusLink = res.SCOPUS_link, PublishDate = res.pubDate, Quartile = res.quartile }).ToListAsync();
+
+            }
+            catch  
+            {
+
+                
+            }
+            try
+            {
+            list.AddRange(await (from res in _context.Conferences join tech in _context.ConferenceResearches on res.ID equals tech.ConferenceId where tech.ResearcherId == id select new ResViewModel { Title = res.Title, Link = res.ResearchLink, ScopusLink = res.ScopusLink  , PublishDate = res.PublishDate }).ToListAsync());
+
+            }
+            catch  
+            {
+
+                
+            }
+
+            try
+            {
+                list = (from item in list orderby item.PublishDate descending select item).ToList(); 
+
+            }
+            catch  
+            {
+
+             
+            }
+
+            return Ok(list);
+
+        }
+
+
         [HttpGet("/Api/ResDetails/{id}")]
         public async Task<ActionResult> ResDetails([FromRoute] long id)
         {
@@ -61,10 +103,10 @@ namespace aspcore.Controllers
                 res.totalMoney = null;
                 res.SDGList = null;
                 res.scopusHumanDepartment = null;
-                res.Names = null;
+                //res.Names = null;
                 res.Amounts = null;
-                res.Degrees = null;
-                res.Departments = null;
+                //res.Degrees = null;
+                //res.Departments = null;
                 res.attachedFile1 = null;
                 res.attachedFile2 = null;
                 res.attachedFile3 = null;
@@ -90,20 +132,20 @@ namespace aspcore.Controllers
         [HttpGet("/api/IsExist")]
         public async Task<ActionResult> isExist([FromQuery] string search = "")
         {
-           
-                var resault = await _context.ResearchMUS.AnyAsync(item => (item.checkState != "1") && item.title.Contains(search));
-                if (resault)
-                {
-                    return Ok(true);
-                }
-                else if (await _context.Conferences.AnyAsync(item => (item.Status  != Models.ConferenceStatus.pending) && item.Title.Contains(search)))
-                {
-                    return Ok(true);
-                }
 
-                 return Ok(false);
-            
-        
+            var resault = await _context.ResearchMUS.AnyAsync(item => (item.checkState != "1") && item.title.Contains(search));
+            if (resault)
+            {
+                return Ok(true);
+            }
+            else if (await _context.Conferences.AnyAsync(item => (item.Status != Models.ConferenceStatus.pending) && item.Title.Contains(search)))
+            {
+                return Ok(true);
+            }
+
+            return Ok(false);
+
+
 
 
 
@@ -115,7 +157,7 @@ namespace aspcore.Controllers
         {
             try
             {
-                var resault =await _context.ResearchMUS.Where(item => (item.openAccess == "1" && item.checkState == "0") && (item.title.Contains(search) || item.ISSNorEISSN.Contains(search) || item.journaltitle.Contains(search) || item.JournalCountry!.Contains(search))).ToListAsync();
+                var resault = await _context.ResearchMUS.Where(item => (item.openAccess == "1" && item.checkState == "0") && (item.title.Contains(search) || item.ISSNorEISSN.Contains(search) || item.journaltitle.Contains(search) || item.JournalCountry!.Contains(search))).ToListAsync();
                 foreach (var res in resault)
                 {
                     res.ExtResrchDetail = null;
@@ -140,10 +182,10 @@ namespace aspcore.Controllers
                     res.totalMoney = null;
                     res.SDGList = null;
                     res.scopusHumanDepartment = null;
-                    res.Names = null;
+                    //res.Names = null;
                     res.Amounts = null;
-                    res.Degrees = null;
-                    res.Departments = null;
+                    //res.Degrees = null;
+                    //res.Departments = null;
                     res.attachedFile1 = null;
                     res.attachedFile2 = null;
                     res.attachedFile3 = null;
@@ -154,20 +196,20 @@ namespace aspcore.Controllers
                     res.OrderDate = DateTime.Now;
                     res.OrderFile = string.Empty;
                 }
-                
-                
-                if (string.IsNullOrWhiteSpace(search) && resault.Count >5)
+
+
+                if (string.IsNullOrWhiteSpace(search) && resault.Count > 5)
                 {
                     return Ok(resault.Take(5));
                 }
                 return Ok(resault);
             }
-            catch 
+            catch
             {
-                return NotFound(); 
-                 
+                return NotFound();
+
             }
-          
+
 
         }
 

@@ -1,0 +1,91 @@
+﻿@model List<PlanView>
+
+@{
+    ViewData["Title"] = "الخطة البحثية";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<div dir="rtl" class="card col-12 border-0">
+
+
+    <div class="card-header">
+        <h3 class="float-end">
+
+
+            الخطة البحثية لسنه 2024
+
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class=col-1>
+
+                    </th>
+                    
+
+                    <th class="col-2">
+
+                      القسم
+                    </th>
+                    <th class="col-1">
+                       الكلي
+                    </th>
+                    <th class="col-1">
+                        المنجز
+                    </th>
+                    <th>
+                      قيد الانجاز
+                    </th>
+                    <th>
+                        المرفوض
+                    </th>
+
+              
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 0;
+                   
+                }
+                @foreach (var item in Model)
+                {
+                    i++;
+ 
+
+
+                    <tr  >
+                        <td>
+                            @(i.ToString())
+                        </td>
+                        <td>
+                            @item.DepartmentName
+                        </td>
+                        <td>
+                            @item.Total
+                        </td>
+                        <td>
+                            @item.completed
+                        </td>
+                        <td>
+                            @item.In_process
+                        </td>
+                        <td>
+                            @item.rejected
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

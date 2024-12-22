@@ -52,7 +52,7 @@
 
     استنادا الى الصلاحيات المخولة لنا .. بموجب احكام المادة (36) الفقرة ( ثانيا - ب ) من قانون التعليم الاهلي رقم (25) لسنة 2016 , وبناء على ما جاء بأحكام المادة (13) من نظام العمل واللائحة المالية , تقرر مايلي :
     <br />
-    تسوية مبلغ قدره  <b>(@price  دينار عراقي)</b>  للباحث <b>(@name / @dep) </b> لدعم البحوث العلمية المنشورة (باسم الجامعة) في المجلات العلمية الرصينة  بعنوان .
+    تسوية مبلغ قدره  <b>(@price  دينار عراقي)</b>  للباحث <b>(@name / @dep) </b> لدعم البحوث العلمية المنشورة (باسم الجامعة) في المجلات العلمية الرصينة (Scopus Q<span>@Model.quartile</span>)  بعنوان :
 
     <p style="text-align:center;  font-weight:800;">
         ( @Model.title	)
@@ -71,7 +71,7 @@
 <div style="display:block;">
 
     <div style="float:left; padding-top:25px; padding-left:50px;">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=@Model.ResFormId" />
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://res.uomus.edu.iq/showForm.aspx?res=@(Model.Id)%26pass=@(Model.Id*2)" />
     </div>
     <div style="text-align:right;font-size:14px">
 

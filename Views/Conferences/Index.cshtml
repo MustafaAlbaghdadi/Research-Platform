@@ -1,69 +1,457 @@
-﻿@model IEnumerable<aspcore.Models.Conference>
+﻿@using aspcore.Models.Shared
+@model IEnumerable<aspcore.Models.Conference>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{
+    Microsoft.Extensions.Primitives.StringValues queryVal;
+    var m = Context.Request.Query.TryGetValue("Select", out queryVal);
+}
 
-<h1>Conference</h1>
+<div dir="rtl" class="card col-12 border-0">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ResearchTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreateDate)
-            </th>
-
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Code)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ResearchTitle)
-                </td>
+    <div class="card-header">
+        <h3 class="float-end">
+            المؤتمرات
+            :
+            المبلغ الكلي
+            (@ViewBag.TotalAmount)
+            ;
+            مجموع مبالغ  اوامر الصرف
+            :
+            (@ViewBag.TotalAmountCheckout)
+            ;
+            مجموع مبالغ  اوامر التسوية
+            :
+            (@ViewBag.TotalAmountSettlement)
+        </h3>
 
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Type)
-                </td>
+        <div class="float-start">
+            @if (User.IsInRole(UserType.Admin))
+            {
+                <form id="statusSelect" asp-action="index" method="get">
+                    <select name="select" class="form-select" aria-label="Default select example" onchange="{
+                    document.getElementById('statusSelect').submit();
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalAmount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreateDate)
-                </td>
-                <td>
+}">
+                        @{
+                            switch (queryVal)
+                            {
+                                case "1":
+                                    <option selected value="1">في الانتظار</option>
+                                    <option value="8">الحاضنة - موافقة</option>
+                                    <option value="5">الرئاسه - طباعة</option>
+                                    <option value="6">الرئاسة - موافقة</option>
+                                    <option value="7">الرئاسة - رفض</option>
+                                    <option value="9">المالية</option>
+                                    break;
 
-                    @*<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |*@
-                    <a asp-action="Details" class="btn btn-outline-danger" asp-route-id="@item.ID">Details</a> 
 
-                 </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                                case "5":
+                                    <option value="1">في الانتظار</option>
+                                    <option value="8">الحاضنة - موافقة</option>
+
+                                    <option selected value="5">الرئاسه - طباعة</option>
+                                    <option value="6">الرئاسة - موافقة</option>
+                                    <option value="7">الرئاسة - رفض</option>
+                                    <option value="9">المالية</option>
+
+                                    break;
+                                case "6":
+                                    <option value="1">في الانتظار</option>
+                                    <option value="8">الحاضنة - موافقة</option>
+
+                                    <option value="5">الرئاسه - طباعة</option>
+                                    <option selected value="6">الرئاسة - موافقة</option>
+                                    <option value="7">الرئاسة - رفض</option>
+                                    <option value="9">المالية</option>
+
+                                    break;
+                                case "7":
+                                    <option value="1">في الانتظار</option>
+                                    <option value="8">الحاضنة - موافقة</option>
+
+                                    <option value="5">الرئاسه - طباعة</option>
+                                    <option value="6">الرئاسة - موافقة</option>
+                                    <option selected value="7">الرئاسة - رفض</option>
+                                    <option value="9">المالية</option>
+
+                                    break;
+
+                                case "8":
+                                    <option value="1">في الانتظار</option>
+                                    <option value="8" selected>الحاضنة - موافقة</option>
+                                    <option value="5">الرئاسه - طباعة</option>
+                                    <option value="6">الرئاسة - موافقة</option>
+                                    <option value="7">الرئاسة - رفض</option>
+                                    <option value="9">المالية</option>
+
+                                    break;
+                                case "9":
+                                    <option value="1">في الانتظار</option>
+                                    <option value="8">الحاضنة - موافقة</option>
+                                    <option value="5">الرئاسه - طباعة</option>
+                                    <option value="6">الرئاسة - موافقة</option>
+                                    <option value="7">الرئاسة - رفض</option>
+                                    <option value="9" selected>المالية</option>
+
+                                    break;
+                                default:
+                                    <option value="1">في الانتظار</option>
+                                    <option value="8">الحاضنة - موافقة</option>
+
+                                    <option value="5">الرئاسه - طباعة</option>
+                                    <option value="6">الرئاسة - موافقة</option>
+                                    <option value="7">الرئاسة - رفض</option>
+                                    <option value="9">المالية</option>
+
+                                    break;
+
+                            }
+
+                        }
+
+
+                    </select>
+                </form>
+
+            }
+
+
+            @if (User.IsInRole(UserType.ITApprove))
+            {
+                <form id="statusSelect" asp-action="index" method="get">
+                    <select name="select" class="form-select" aria-label="Default select example" onchange="{
+                    document.getElementById('statusSelect').submit();
+
+}">
+                        @{
+                            switch (queryVal)
+                            {
+
+
+                                case "5":
+                                    <option value="8">الحاضنة - موافقة</option>
+                                    <option selected value="5">الرئاسه - طباعة</option>
+                                    <option value="6">الرئاسة - موافقة</option>
+                                    <option value="7">الرئاسة - رفض</option>
+                                    <option value="9">المالية</option>
+                                    break;
+                                case "6":
+                                    <option value="8">الحاضنة - موافقة</option>
+                                    <option value="5">الرئاسه - طباعة</option>
+                                    <option selected value="6">الرئاسة - موافقة</option>
+                                    <option value="7">الرئاسة - رفض</option>
+                                    <option value="9">المالية</option>
+
+                                    break;
+                                case "7":
+                                    <option value="8">الحاضنة - موافقة</option>
+                                    <option value="5">الرئاسه - طباعة</option>
+                                    <option value="6">الرئاسة - موافقة</option>
+                                    <option selected value="7">الرئاسة - رفض</option>
+                                    <option value="9">المالية</option>
+
+                                    break;
+
+                                case "8":
+                                    <option value="8" selected>الحاضنة - موافقة</option>
+                                    <option value="5">الرئاسه - طباعة</option>
+                                    <option value="6">الرئاسة - موافقة</option>
+                                    <option value="7">الرئاسة - رفض</option>
+                                    <option value="9">المالية</option>
+
+                                    break;
+                                case "9":
+                                    <option value="8">الحاضنة - موافقة</option>
+                                    <option value="5">الرئاسه - طباعة</option>
+                                    <option value="6">الرئاسة - موافقة</option>
+                                    <option value="7">الرئاسة - رفض</option>
+                                    <option value="9" selected>المالية</option>
+
+                                    break;
+                                default:
+                                    <option value="8">الحاضنة - موافقة</option>
+                                    <option value="5">الرئاسه - طباعة</option>
+                                    <option value="6">الرئاسة - موافقة</option>
+                                    <option value="7">الرئاسة - رفض</option>
+                                    <option value="9">المالية</option>
+
+                                    break;
+
+                            }
+
+                        }
+
+
+                    </select>
+                </form>
+
+            }
+
+            @if (User.IsInRole(UserType.President))
+            {
+                <form id="statusSelect" asp-action="index" method="get">
+                    <select name="select" class="form-select" aria-label="Default select example" onchange="{
+                    document.getElementById('statusSelect').submit();
+
+}">
+                        @{
+                            switch (queryVal)
+                            {
+
+
+                                case "5":
+                                    <option selected value="5">الرئاسه - طباعة</option>
+                                    <option value="6">الرئاسة - موافقة</option>
+                                    <option value="7">الرئاسة - رفض</option>
+                                    <option value="9">المالية</option>
+
+                                    break;
+                                case "6":
+                                    <option value="5">الرئاسه - طباعة</option>
+                                    <option selected value="6">الرئاسة - موافقة</option>
+                                    <option value="7">الرئاسة - رفض</option>
+                                    <option value="9">المالية</option>
+
+                                    break;
+                                case "7":
+                                    <option value="5">الرئاسه - طباعة</option>
+                                    <option value="6">الرئاسة - موافقة</option>
+                                    <option selected value="7">الرئاسة - رفض</option>
+                                    <option value="9">المالية</option>
+                                    break;
+
+                                case "9":
+                                    <option value="5">الرئاسه - طباعة</option>
+                                    <option value="6">الرئاسة - موافقة</option>
+                                    <option value="7">الرئاسة - رفض</option>
+                                    <option value="9" selected>المالية</option>
+
+                                    break;
+                                default:
+                                    <option value="5">الرئاسه - طباعة</option>
+                                    <option value="6">الرئاسة - موافقة</option>
+                                    <option value="7">الرئاسة - رفض</option>
+                                    <option value="9">المالية</option>
+
+                                    break;
+
+                            }
+
+                        }
+
+
+                    </select>
+                </form>
+
+            }
+
+        </div>
+    </div>
+
+
+    <div class="card-body">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class=col-1>
+
+                    </th>
+                    <th class=col-1 text-center>
+                        نوع الامر
+                    </th>
+                    <th class=col-4>
+                        @Html.DisplayNameFor(model => model.ResearchTitle)
+                    </th>
+
+                    @if (User.IsInRole(UserType.Admin) || User.IsInRole(UserType.ITApprove))
+                    {
+                        <th class="col-2">
+
+                            @Html.DisplayNameFor(model => model.Type)
+                        </th>
+
+                        <th class="col-1">
+                            @Html.DisplayNameFor(model => model.CreateDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Names)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Departments)
+                        </th>
+                    }
+                    else
+                    {
+                        <th class="col-2">
+
+                            @Html.DisplayNameFor(model => model.Names)
+                        </th>
+                        <th class="col-1">
+                            @Html.DisplayNameFor(model => model.TotalAmount)
+                        </th>
+
+                        <th class="col-1">
+                            @Html.DisplayNameFor(model => model.PrintCount)
+                        </th>
+
+                    }
+                    <th class="col-3"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 0;
+                    var pritClass = "";
+                }
+                @foreach (var item in Model)
+                {
+                    i++;
+
+                    if (item.PrintCount > 0)
+                    {
+                        pritClass = "text-success";
+                    }
+                    else
+                    {
+                        pritClass = "";
+
+
+
+                    }
+                    <tr class="@pritClass">
+                        <td>
+                            @(i.ToString())
+                        </td>
+                        <td>
+                            @if (item.OrderFormat == OrderFormat.ScopusCheckout)
+                            {
+                                <p class="alert alert-success text-center">امر صرف</p>
+                            }
+                            else
+                            {
+                                <p class="alert alert-danger text-center">امر تسوية</p>
+
+
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ResearchTitle)
+                        </td>
+
+
+
+                        @if (User.IsInRole(UserType.Admin) || User.IsInRole(UserType.ITApprove))
+                        {
+                            <td>
+                                @item.Type
+                            </td>
+
+
+                            <td>
+                                @item.CreateDate.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Names)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Departments)
+                            </td>
+                            <td>
+                                <a class="btn btn-outline-danger" asp-action="Details" asp-route-id="@item.ID">Review</a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="col-2">
+
+                                @Html.DisplayFor(modelItem => item.Names)
+                            </td>
+                            <td class="col-1">
+                                @Html.DisplayFor(modelItem => item.TotalAmount)
+                            </td>
+                            <td>
+                                @item.PrintCount
+                            </td>
+
+                            @if (item.Status == ConferenceStatus.PresidentAproved)
+
+                            {
+
+                                <td>
+                                    <a class="btn btn-outline-danger" asp-action="Details" asp-route-id="@item.ID">Review</a>
+                                </td>
+                            }
+                            else if (item.Status == ConferenceStatus.PresidentPrint)
+
+                            {
+
+                                <td class="text-center ">
+                                    <a class="btn btn-outline-secondary" asp-action="print" asp-route-id="@item.ID">طباعة</a>
+
+                                    <a class="btn btn-outline-info" onclick="{
+var res = confirm('هل تم توقيع الكتاب من رئيس الجامعة ؟');
+                                    if(!res){
+                                    return false;
+}
+
+}" asp-action="PresidentAprove" asp-route-id="@item.ID">موافق</a>
+
+
+
+
+                                    <form id="reviewForm" class="d-inline" method="get" action="/Conferences/presednetReject">
+                                        <!-- Other form fields can go here -->
+
+                                        <input type="hidden" id="rejectReasonInput" name="rejectReason">
+                                        <input type="hidden" id="ID" name="ID" value="@item.ID">
+
+                                        <!-- Button to trigger the prompt -->
+                                        <input type="button" class="btn btn-outline-danger" value="رفض" onclick="handleRejectClick()">
+                                    </form>
+
+                                    <script>
+                                        function handleRejectClick() {
+                                            // Prompt the user for the reason
+                                            var res = prompt('يرجى كتابة سبب الرفض');
+
+                                            // Check if the response is not null or empty
+                                            if (res != null && res.trim() !== '') {
+                                                // Set the hidden input value
+                                                document.getElementById('rejectReasonInput').value = res;
+
+                                                // Submit the form
+                                                document.getElementById('reviewForm').submit();
+                                            } else {
+                                                // Do nothing if the response is invalid
+                                                return false;
+                                            }
+                                        }
+                                    </script>
+
+
+
+
+
+
+                                </td>
+
+                            }
+
+                        }
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+
+
+</div>

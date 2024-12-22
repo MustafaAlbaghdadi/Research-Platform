@@ -23,16 +23,78 @@ namespace aspcore.Controllers
         }
 
 
+        public static string AddCommaBefore000(string number)
+        {
+            string numberString = number;
+            int length = numberString.Length;
 
+            // Insert comma before every "000" starting from the end
+            for (int i = length - 3; i > 0; i -= 3)
+            {
+                numberString = numberString.Insert(i, ",");
+            }
+
+            return numberString;
+        }
 
         // GET: ResearchMUS
         public async Task<IActionResult> Index([FromQuery] int select = 1)
         {
-            if (User.IsInRole(UserType.President))
+            List<ResearchMUS> list = new List<ResearchMUS>();
+
+            //if (User.IsInRole(UserType.President))
+            //{
+            //    list = await _context.ResearchMUS.Where(item => item.checkState == "4" && item.viewlvl != 0).ToListAsync();
+            //    ViewBag.TotalAmount = AddCommaBefore000(list.Sum(item => item.totalMoney).Value.ToString());
+            //    return View(list);
+            //}
+
+            //if (User.IsInRole(UserType.ITApprove))
+            //{
+            //    list = await _context.ResearchMUS.Where(item => item.checkState == "7" && item.viewlvl != 0).ToListAsync();
+            //    ViewBag.TotalAmount = AddCommaBefore000(list.Sum(item => item.totalMoney).Value.ToString());
+
+            //    return View(list);
+            //}
+
+            if (await _context.ResearchMUS.AnyAsync(item => string.IsNullOrWhiteSpace(item.Names)))
             {
-                return View(await _context.ResearchMUS.Where(item => item.checkState == "4" && item.viewlvl != 0).ToListAsync());
+                foreach (var researchMUS in _context.ResearchMUS.Where(item => string.IsNullOrWhiteSpace(item.Names)))
+                {
+                    var rrts = await _context.RR2tabel.Where(item => item.ResearchId == researchMUS.Id).OrderBy(item => item.ResearcherLvl).ToListAsync();
+                    researchMUS.Names = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherArName).ToList());
+                    researchMUS.Amounts = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherMoney).ToList());
+                    researchMUS.Degrees = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherDeg).ToList());
+                    List<string> deplist = new List<string>();
+                    foreach (var item in rrts)
+                    {
+                        deplist.Add(item.ResearcherDept);
+
+                    }
+                    researchMUS.Departments = String.Join(Environment.NewLine, deplist);
+                }
+                _context.SaveChanges();
             }
-            return View(await _context.ResearchMUS.Where(item => item.checkState == select.ToString() && item.viewlvl != 0).ToListAsync());
+            if (User.IsInRole(UserType.President) && select == 1)
+            {
+                select = 4;
+            }
+
+            if (User.IsInRole(UserType.ITApprove) && select == 1)
+            {
+                select = 7;
+            }
+            if (User.IsInRole(UserType.Finance))
+            {
+                select = 8;
+            }
+
+            list = await _context.ResearchMUS.Where(item => item.checkState == select.ToString() && item.viewlvl != 0).ToListAsync();
+            ViewBag.TotalAmount = AddCommaBefore000(list.Sum(item => item.totalMoney).Value.ToString());
+            ViewBag.TotalAmountCheckout = AddCommaBefore000(list.Where(item => item.OrderFormat == OrderFormat.ScopusCheckout).Sum(item => item.totalMoney).ToString());
+            ViewBag.TotalAmountSettlement = AddCommaBefore000(list.Where(item => item.OrderFormat == OrderFormat.ScopusSettlement).Sum(item => item.totalMoney).ToString());
+
+            return View(list);
 
         }
 
@@ -64,9 +126,10 @@ namespace aspcore.Controllers
             return View(await qetQuery(visaFilter));
 
         }
+
         public async Task<List<ResearchMUS>> qetQuery(ReasearchFilter visaFilter)
         {
-            var query = _context.ResearchMUS.Where(item => item.viewlvl == 1 && item.checkState == "0");
+            var query = _context.ResearchMUS.Where(item => item.viewlvl == 1 /*&& item.checkState == "0"*/);
 
             if (visaFilter.QuarterSelected > 0)
             {
@@ -427,9 +490,11 @@ namespace aspcore.Controllers
                 researchMUS.ResearchersList = ResearchersList;
             }
 
+
+
             if (string.IsNullOrWhiteSpace(researchMUS.Departments))
             {
-                var rrts = await _context.RR2tabel.Where(item => item.ResearchId == researchMUS.Id).ToListAsync();
+                var rrts = await _context.RR2tabel.Where(item => item.ResearchId == researchMUS.Id).OrderBy(item => item.ResearcherLvl).ToListAsync();
                 researchMUS.Names = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherArName).ToList());
                 researchMUS.Amounts = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherMoney).ToList());
                 researchMUS.Degrees = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherDeg).ToList());
@@ -440,10 +505,10 @@ namespace aspcore.Controllers
 
                 }
                 researchMUS.Departments = String.Join(Environment.NewLine, deplist);
- 
+
                 _context.SaveChanges();
             }
-           
+
 
             if (researchMUS == null)
             {
@@ -497,6 +562,65 @@ namespace aspcore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet("FinanceApprove")]
+        public async Task<ActionResult> FinanceApprove([FromQuery] long id)
+        {
+            var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == id && item.viewlvl == 1);
+            researchMUS.checkState = "0";
+            await _context.SaveChangesAsync();
+            return Redirect("/");
+
+        }
+
+        [HttpPost("FinanceInvoiceApprove")]
+        public async Task<ActionResult> FinanceInvoiceApproveAsync( long id,  IFormFile InvoiceFile)
+        {
+
+            string InvoiceUrl = "https://resadmin.uomus.edu.iq";//todo 
+            if (_context.ResearchMUS == null || InvoiceFile == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.ResearchMUS'  is null.");
+            }
+
+            if (InvoiceFile.ContentType != "application/pdf")
+            {
+                return BadRequest();
+            }
+
+            string rootDir = System.IO.Directory.GetCurrentDirectory() + @"\Files\";
+            if (!System.IO.Directory.Exists(rootDir))
+            {
+                System.IO.Directory.CreateDirectory(rootDir);
+            }
+            string fileName = Guid.NewGuid().ToString() + ".pdf";
+            string filePath = Path.Combine(rootDir, fileName);
+
+
+            using (Stream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            {
+                InvoiceFile.CopyTo(fileStream);
+            }
+
+            string relativePath = "/Files/" + fileName;
+            InvoiceUrl += relativePath;
+
+            var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == id && item.viewlvl == 1);
+            if (researchMUS != null)
+            {
+
+                researchMUS.InvoiceFile = relativePath;
+                researchMUS.checkState = "0";
+                await _context.SaveChangesAsync();
+
+
+
+            }
+
+
+
+            return Redirect("/");
+
+        }
 
 
         [HttpPost, ActionName("DirectApprove")]
@@ -505,25 +629,25 @@ namespace aspcore.Controllers
         {
 
             string OrderUrl = "https://resadmin.uomus.edu.iq";//todo 
-            if (_context.ResearchMUS == null  )
+            if (_context.ResearchMUS == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.ResearchMUS'  is null.");
             }
 
-        
- 
-  
+
+
+
             var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == id && item.viewlvl == 1);
             if (researchMUS != null)
             {
 
                 researchMUS.OrderDate = DateTime.Now;
- 
+
                 // researchMUS.SDGtype = ","+string.Join(',' , SDGList)+",";
                 researchMUS.checkState = "0";
                 researchMUS.LastUpDate = DateTime.Now;
                 //researchMUS.totalMoney = TotalPrice;
-                var rrts = await _context.RR2tabel.Where(item => item.ResearchId == researchMUS.Id).ToListAsync();
+                var rrts = await _context.RR2tabel.Where(item => item.ResearchId == researchMUS.Id).OrderBy(item => item.ResearcherLvl).ToListAsync();
                 researchMUS.Names = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherArName).ToList());
                 researchMUS.Amounts = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherMoney).ToList());
                 researchMUS.Degrees = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherDeg).ToList());
@@ -539,17 +663,17 @@ namespace aspcore.Controllers
             }
 
             await _context.SaveChangesAsync();
-            //try
-            //{
-            //    System.Net.WebClient wc = new System.Net.WebClient();
-            //    wc.DownloadString(researchMUS.ResFormId + $"?secret=kjhadbfkgdbfhgadfgadbfgadfkjasdkvbhc&status=5&orderurl={OrderUrl}");
+            try
+            {
+                System.Net.WebClient wc = new System.Net.WebClient();
+                wc.DownloadString(researchMUS.ResFormId + $"?secret=kjhadbfkgdbfhgadfgadbfgadfkjasdkvbhc&status=5&it=Direct");
 
-            //}
-            //catch
-            //{
+            }
+            catch
+            {
 
 
-            //}
+            }
 
             return RedirectToAction(nameof(Index));
         }
@@ -559,7 +683,7 @@ namespace aspcore.Controllers
         // POST: ResearchMUS/Delete/5
         [HttpPost, ActionName("Approve")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Approve(long id, IFormFile OrderFile)
+        public async Task<IActionResult> Approve(long id, IFormFile OrderFile, string OrderNumber, DateTime OrderDate)
         {
 
             string OrderUrl = "https://resadmin.uomus.edu.iq";//todo 
@@ -594,19 +718,19 @@ namespace aspcore.Controllers
             if (researchMUS != null)
             {
 
-                researchMUS.OrderDate = DateTime.Now;
                 researchMUS.OrderFile = relativePath;
 
                 // researchMUS.SDGtype = ","+string.Join(',' , SDGList)+",";
-                researchMUS.checkState = "0";
+                researchMUS.checkState = "8";
                 researchMUS.LastUpDate = DateTime.Now;
                 //researchMUS.totalMoney = TotalPrice;
                 var rrts = await _context.RR2tabel.Where(item => item.ResearchId == researchMUS.Id).ToListAsync();
                 researchMUS.Names = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherArName).ToList());
                 researchMUS.Amounts = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherMoney).ToList());
                 researchMUS.Degrees = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherDeg).ToList());
-
-
+                researchMUS.OrderDate = OrderDate.Date;
+                researchMUS.OrderNumber = OrderNumber;
+              
                 List<string> deplist = new List<string>();
                 foreach (var item in rrts)
                 {
@@ -621,7 +745,6 @@ namespace aspcore.Controllers
             {
                 System.Net.WebClient wc = new System.Net.WebClient();
                 wc.DownloadString(researchMUS.ResFormId + $"?secret=kjhadbfkgdbfhgadfgadbfgadfkjasdkvbhc&status=5&orderurl={OrderUrl}");
-
             }
             catch
             {
@@ -630,6 +753,46 @@ namespace aspcore.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+
+        [HttpPost, ActionName("ITApproveMustafa")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ITApproveMustafa(ResearchMUS research)
+        {
+            if (_context.ResearchMUS == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.ResearchMUS'  is null.");
+            }
+
+
+
+
+
+            var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == research.Id && item.viewlvl == 1);
+            if (researchMUS != null)
+            {
+                // researchMUS.SDGtype = ","+string.Join(',' , SDGList)+",";
+                researchMUS.checkState = "7";
+                researchMUS.PrintCount = 0;
+                researchMUS.LastUpDate = DateTime.Now;
+                //researchMUS.totalMoney = TotalPrice;
+
+                researchMUS.totalMoney = research.totalMoney;
+                researchMUS.OrderFormat = research.OrderFormat;
+            }
+
+            if (string.IsNullOrWhiteSpace(researchMUS.ResFormId))
+            {
+                researchMUS.ResFormId = research.ResFormId;
+
+            }
+
+            await _context.SaveChangesAsync();
+          
+            return RedirectToAction(nameof(Index));
+
+
         }
 
 
@@ -643,57 +806,29 @@ namespace aspcore.Controllers
             }
 
 
-            //foreach (var researchMUS in _context.ResearchMUS.Where(item => item.viewlvl == 1).ToList())
-            //{
-            //    researchMUS.checkState = "0";
-            //    researchMUS.LastUpDate = DateTime.Now;
-            //    //researchMUS.totalMoney = TotalPrice;
-            //    var rrts = await _context.RR2tabel.Where(item => item.ResearchId == researchMUS.Id).ToListAsync();
-            //    researchMUS.Names = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherArName).ToList());
-            //    researchMUS.Amounts = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherMoney).ToList());
-            //    researchMUS.Degrees = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherDeg).ToList());
 
-
-            //    List<string> deplist = new List<string>();
-            //    foreach (var item in rrts)
-            //    {
-            //        deplist.Add(item.ResearcherDept);
-
-            //    }
-            //    researchMUS.Departments = String.Join(Environment.NewLine, deplist);
-            //}
 
 
             var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == research.Id && item.viewlvl == 1);
             if (researchMUS != null)
             {
-                // researchMUS.SDGtype = ","+string.Join(',' , SDGList)+",";
                 researchMUS.checkState = "4";
                 researchMUS.PrintCount = 0;
                 researchMUS.LastUpDate = DateTime.Now;
-                //researchMUS.totalMoney = TotalPrice;
-                var rrts = await _context.RR2tabel.Where(item => item.ResearchId == researchMUS.Id).ToListAsync();
-                researchMUS.Names = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherArName).ToList());
-                researchMUS.Amounts = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherMoney).ToList());
-                researchMUS.Degrees = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherDeg).ToList());
 
+            }
 
-                List<string> deplist = new List<string>();
-                foreach (var item in rrts)
-                {
-                    deplist.Add(item.ResearcherDept);
+            if (string.IsNullOrWhiteSpace(researchMUS.ResFormId))
+            {
+                researchMUS.ResFormId = research.ResFormId;
 
-                }
-                researchMUS.Departments = String.Join(Environment.NewLine, deplist);
-                researchMUS.totalMoney = research.totalMoney;
-                researchMUS.OrderFormat = research.OrderFormat;
             }
 
             await _context.SaveChangesAsync();
             try
             {
                 System.Net.WebClient wc = new System.Net.WebClient();
-                wc.DownloadString(researchMUS.ResFormId + $"?secret=kjhadbfkgdbfhgadfgadbfgadfkjasdkvbhc&status=4");
+                  wc.DownloadString(researchMUS.ResFormId + $"?secret=kjhadbfkgdbfhgadfgadbfgadfkjasdkvbhc&status=4");
 
             }
             catch
@@ -706,7 +841,6 @@ namespace aspcore.Controllers
 
 
         public async Task<ActionResult> PrintAsync(long id)
-
         {
             var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == id && item.viewlvl == 1);
             researchMUS.PrintCount += 1;
@@ -724,6 +858,38 @@ namespace aspcore.Controllers
                     break;
             }
             return View();
+        }
+
+        public async Task<ActionResult> printInvoiceAsync(long id)
+        {
+            var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == id && item.viewlvl == 1);
+
+            Invoice invoice;
+            if (researchMUS.InvoiceId == 0)
+            {
+                invoice = new Invoice
+                {
+                    Amount = researchMUS.totalMoney.Value,
+                    Name = researchMUS.Names.Split('\n')[0],
+                    OrderDate = researchMUS.OrderDate,
+                    OrderNumber = researchMUS.OrderNumber,
+                    ReaserchType = ReaserchType.Scopus,
+                    AmountString = NumberToArabicText.ConvertToArabicText(researchMUS.totalMoney.Value)
+                };
+                _context.Invoices.Add(invoice);
+                _context.SaveChanges();
+                researchMUS.InvoiceId =Convert.ToInt32( invoice.Id.ToString());
+                _context.SaveChanges();
+            }
+            else
+            {
+                invoice = await _context.Invoices.FirstAsync(item => item.Id == researchMUS.InvoiceId);
+            }
+            ViewBag.id = id;
+            return View("~/Views/Invoice/print.cshtml", invoice);
+
+
+
         }
 
 
@@ -760,6 +926,16 @@ namespace aspcore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = UserType.Admin)]
+
+        public async Task<ActionResult> ChangeAmount(ResearchMUS research)
+        {
+            var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == research.Id && item.viewlvl == 1);
+            researchMUS.totalMoney = research.totalMoney;
+            await _context.SaveChangesAsync();
+
+            return Redirect("/ResearchMUS/Review/" + research.Id);
+        }
         private bool ResearchMUSExists(long id)
         {
             return (_context.ResearchMUS?.Any(e => e.Id == id && e.viewlvl == 1)).GetValueOrDefault();

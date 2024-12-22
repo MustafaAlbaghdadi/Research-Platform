@@ -1,9 +1,10 @@
 ﻿@model aspcore.Models.ResearchMUS
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Review";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 
 <div class="card-header">
     <h3 class="float-start">Review</h3>
@@ -82,12 +83,33 @@
     <br />
     <div class="row text-center">
         <div class="alert alert-success">
+
             <h4 class="m-0">
                 @Model.totalMoney:المبلغ الكلي
             </h4>
+
+            @if (Model.checkState == "7")
+            {
+
+
+
+                @*  <form asp-action="ChangeAmount" dir="rtl">
+            <input type="hidden" asp-for="Id" />
+
+            <br />
+            <label asp-for="totalMoney">المبلغ</label>
+
+            <input class="form-control" asp-for="totalMoney" />
+            <br />
+            <center>
+            <input type="submit" value="حفظ" class="btn btn-primary" />
+            </center>
+            </form> *@
+            }
+
         </div>
-     
-    
+
+
 
     </div>
     <div class="row">
@@ -204,8 +226,15 @@
                 </dt>
                 <dd class="col-sm-10">
                     <a target="_blank" href="@Model.ResFormId">
-                        رابط الاستمارة
+                        رابط الطلب
                     </a>
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.OrderFormat)
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.OrderFormat
                 </dd>
 
 
@@ -376,8 +405,27 @@
     <center>
 
         <a target="_blank" href="http://res.uomus.edu.iq/showForm.aspx?res=@(Model.Id)&pass=@(Model.Id*2)" class="btn btn-primary">عرض الاستمارة</a>
-        <a target="_blank" href="/ResearchMUS/OrderPrint/@Model.Id" class="btn btn-primary">امر صرف</a>
-        <a target="_blank" href="/ResearchMUS/ScopusSettlementPrint/@Model.Id" class="btn btn-primary">امر تسوية</a>
+        @if ( !string.IsNullOrWhiteSpace( Model.InvoiceFile) )
+        {
+            <a target="_blank" href="http://resadmin.uomus.edu.iq@(Model.InvoiceFile)" class="btn btn-primary">وصل الصرف</a>
+
+           
+           
+        }
+        
+        @if (Model.checkState == "7")
+        {
+            if (Model.OrderFormat == OrderFormat.ScopusCheckout)
+            {
+                <a target="_blank" href="/ResearchMUS/OrderPrint/@Model.Id" class="btn btn-primary">امر صرف</a>
+
+            }
+            if (Model.OrderFormat == OrderFormat.ScopusSettlement)
+            {
+                <a target="_blank" href="/ResearchMUS/ScopusSettlementPrint/@Model.Id" class="btn btn-primary">امر تسوية</a>
+
+            }
+        }
 
     </center>
 
@@ -427,12 +475,54 @@
                     switch (Model.checkState)
                     {
                         case "5":// upload Order File
-                            <form asp-action="Approve" enctype="multipart/form-data">
+                            <form asp-action="Approve" enctype="multipart/form-data" dir="rtl">
                                 <input type="hidden" asp-for="Id" />
 
-                                <br/>
+                                <br />
+
+
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">الامر الجامعي</label>
+                                    <input type="file" class="form-control" id="OrderFile" name="OrderFile" required />
+
+                                </div>
+
+
+                                <div class="form-group mt-3">
+                                    <label for="OrderNumber">العدد</label>
+                                    <input type="text" id="OrderNumber" class="form-control" name="OrderNumber" required />
+
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <label for="OrderDate">تاريخ الامر الجامعي</label>
+                                    <input type="date" id="OrderDate" class="form-control" name="OrderDate" required />
+
+                                </div>
+
+
+                                <br />
+
+                                <input type="submit" value="Approve" class="btn btn-primary" />
+
+                               
+                            </form>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    const today = new Date().toISOString().split('T')[0];
+                                    document.getElementById('OrderDate').value = today;
+                                });
+                            </script>
+
+                            break;
+
+
+                        case "7":// upload Order File
+                            <form asp-action="ITApprove">
+                                <input type="hidden" asp-for="Id" />
+
+                                <br />
                                 <center>
-                                    <input type="file" id="OrderFile" name="OrderFile" required />
 
                                     <input type="submit" value="Approve" class="btn btn-primary" />
                                 </center>
@@ -441,20 +531,50 @@
 
                             break;
 
+
                         case "1":
-                            <form asp-action="ITApprove" dir="rtl" >
+
+
+
+                            <form asp-action="ITApproveMustafa" dir="rtl">
                                 <input type="hidden" asp-for="Id" />
-                                <label asp-for="OrderFormat" >فورمة الامر الجامعي</label>
+                                <label asp-for="OrderFormat">فورمة الامر الجامعي</label>
+
                                 <select class="form-select form-select-lg mb-3 text-center" asp-for="OrderFormat">
-                                 <option value="@OrderFormat.ScopusCheckout">امر صرف</option>
-                                    <option value="@OrderFormat.ScopusSettlement">تسوية</option>
+                                    @{
+                                        switch (Model.OrderFormat)
+                                        {
+                                            case OrderFormat.ScopusCheckout:
+                                                <option selected value="@OrderFormat.ScopusCheckout">امر صرف</option>
+                                                <option value="@OrderFormat.ScopusSettlement">تسوية</option>
+                                                break;
+                                            case OrderFormat.ScopusSettlement:
+                                                <option value="@OrderFormat.ScopusCheckout">امر صرف</option>
+                                                <option selected value="@OrderFormat.ScopusSettlement">تسوية</option>
+
+                                                break;
+                                        }
+                                    }
+
+
                                 </select>
 
                                 <br />
                                 <label asp-for="totalMoney">المبلغ</label>
 
-                                <input class="form-control"  asp-for="totalMoney" />
-                                <br/>
+                                <input class="form-control" asp-for="totalMoney" />
+
+
+
+                                @if (string.IsNullOrWhiteSpace(Model.ResFormId))
+                                {
+                                    <br />
+                                    <label asp-for="ResFormId">رابط الاستمارة</label>
+
+                                    <input class="form-control" required asp-for="ResFormId" />
+
+                                }
+                                <br />
                                 <center>
                                     <input type="submit" value="الرئاسة - طباعة" class="btn btn-primary" />
                                 </center>
@@ -466,9 +586,6 @@
                             <form asp-action="DirectApprove" dir="rtl">
                                 <input type="hidden" asp-for="Id" />
 
-                               
-
-                               
                                 <br />
                                 <br />
                                 <hr />
@@ -484,8 +601,20 @@
                                 <input type="hidden" asp-for="Id" />
                                 <label asp-for="OrderFormat">فورمة الامر الجامعي</label>
                                 <select class="form-select form-select-lg mb-3 text-center" asp-for="OrderFormat">
-                                    <option value="@OrderFormat.ScopusCheckout">امر صرف</option>
-                                    <option value="@OrderFormat.ScopusSettlement">تسوية</option>
+                                    @{
+                                        switch (Model.OrderFormat)
+                                        {
+                                            case OrderFormat.ScopusCheckout:
+                                                <option selected value="@OrderFormat.ScopusCheckout">امر صرف</option>
+                                                <option value="@OrderFormat.ScopusSettlement">تسوية</option>
+                                                break;
+                                            case OrderFormat.ScopusSettlement:
+                                                <option value="@OrderFormat.ScopusCheckout">امر صرف</option>
+                                                <option selected value="@OrderFormat.ScopusSettlement">تسوية</option>
+
+                                                break;
+                                        }
+                                    }
                                 </select>
 
                                 <br />
@@ -502,7 +631,7 @@
                 }
 
 
-                
+
 
             </div>
         </div>

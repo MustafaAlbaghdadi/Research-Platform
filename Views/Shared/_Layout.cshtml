@@ -25,8 +25,8 @@
         }
     </style>
 </head>
-<body>
-    <header>
+<body >
+    <header dir="rtl">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-info border-bottom box-shadow mb-3 text-light">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="ResearchMUS" asp-action="Index">Research Platfrom</a>
@@ -34,8 +34,37 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div dir="rtl" class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        
+                         @if (User.IsInRole(UserType.Finance))
+                        {
+
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="ResearchMUS" asp-action="Index">سكوبس</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Conferences" asp-action="Index">المؤتمرات</a>
+                            </li>
+                            
+
+                        }
+
+
+                        @if (User.IsInRole(UserType.President))
+                        {
+
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="ResearchMUS" asp-action="Index">سكوبس</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Conferences" asp-action="Index">المؤتمرات</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="ResearchMUS" asp-action="Archive">بحث</a>
+                            </li>
+
+                        }
                         @if (User.IsInRole(UserType.Admin))
                         {
                             <li class="nav-item">
@@ -46,7 +75,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="ResearchMUS" asp-action="Archive">Archive</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="ResearchMUS" asp-action="Archive">بحث</a>
                             </li>
 
                             <li class="nav-item">
@@ -63,7 +92,40 @@
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-controller="Reports" asp-action="SDG">SDG</a>
                             </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Reports" asp-action="plan">الخطة البحثية</a>
+                            </li>
+
                         }
+
+                        
+                        @if (User.IsInRole(UserType.ITApprove))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="ResearchMUS" asp-action="Index">سكوبس</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Conferences" asp-action="Index">المؤتمرات</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="ResearchMUS" asp-action="Archive">بحث</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Reports" asp-action="Departments">Departments</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Reports" asp-action="Quartile">Quartile</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Reports" asp-action="plan">الخطة البحثية</a>
+                            </li>
+
+                        }
+
+
 
                         @if (User.IsInRole(UserType.Client))
                         {

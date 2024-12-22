@@ -5,6 +5,27 @@ namespace aspcore.Models
 {
     public class ResearchMUS
     {
+        public string CheckStateToString(string checkState)
+        {
+            switch (checkState)
+            {
+                case "8":
+                    return "الماليه - الصرف";
+                case "1":
+                    return "الحاضنة التدقيق";
+                case "7":
+                    return "الحاضنه موافقة";
+                case "4":
+                    return "الرئاسه - طباعة";
+                case "5":
+                    return "الرئاسة - موافقة";
+                case "6":
+                    return "الرئاسة - رفض";
+                case "0":
+                    return "مؤرشف";
+            }
+            return "";
+        }
         public long Id { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -77,7 +98,7 @@ namespace aspcore.Models
         public string? QRimage { get; set; }
         [Display(Name = "Last UpDate")]
         public DateTime LastUpDate { get; set; }
-        public string checkState { get; set; } // 3 IT reject , 2 Check Pendding, 1 Admin pending, 0 Complete ,4 president prining , 5 president Approved , 6 president reject
+        public string checkState { get; set; } // 3 IT reject , 2 Check Pendding, 1 Admin pending, 0 Complete ,4 president prining , 5 president Approved , 6 president reject , 7 IT Pendding Approveing,8 Finince
         public OrderFormat OrderFormat { get; set; }
 
 
@@ -107,7 +128,6 @@ namespace aspcore.Models
         public string? Departments { get; set; }
         [Display(Name = "attachedFile1")]
         public string attachedFile1 { get; set; }
-
         [Display(Name = "attachedFile2")]
         public string attachedFile2 { get; set; }
         [Display(Name = "attachedFile3")]
@@ -116,14 +136,15 @@ namespace aspcore.Models
         public string attachedFile4 { get; set; }
         public bool externalResearcher { get; set; }
         public bool? GrantInfo { get; set; }
-
-
         [Display(Name = "Order Num.")]
         public string OrderNumber { get; set; }
         [Display(Name = "Order Date.")]
         public DateTime OrderDate { get; set; }
         [Display(Name = "Order File.")]
-        public string OrderFile { get; set; }   
+        public string OrderFile { get; set; }    
+        
+        [Display(Name = "Invoice File.")]
+        public string? InvoiceFile { get; set; }   
         
         [Display(Name = "توصية من الشؤون العلمية")]
         public string? ScientificrRcommendation { get; set; }
@@ -131,6 +152,9 @@ namespace aspcore.Models
         public string? ResFormId { get; set; } 
         [Display(Name = "عدد مرات الطباعة")]
         public int PrintCount { get; set; }
+        [Display(Name = "رقم الوصل")]
+        public int InvoiceId { get; set; }
+
 
     }
 

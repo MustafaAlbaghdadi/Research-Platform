@@ -474,6 +474,23 @@
 
                     switch (Model.checkState)
                     {
+
+
+                        case "3":
+                            <form asp-action="ITRemoveAddes">
+                                <input type="hidden" asp-for="Id" />
+                                <p>
+                                سوف يتم الغاء جميع الاضافات المالية ويحسب فقط مبلغ الربع ويعتبر البحث بحث اول 
+                                </p>
+                                <br />
+                                <center>
+
+                                    <input type="submit" value="الغاء الامتيازات" class="btn btn-primary" />
+                                </center>
+                            </form>
+
+
+                            break;
                         case "5":// upload Order File
                             <form asp-action="Approve" enctype="multipart/form-data" dir="rtl">
                                 <input type="hidden" asp-for="Id" />

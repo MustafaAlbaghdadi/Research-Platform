@@ -573,7 +573,7 @@ namespace aspcore.Controllers
         }
 
         [HttpPost("FinanceInvoiceApprove")]
-        public async Task<ActionResult> FinanceInvoiceApproveAsync( long id,  IFormFile InvoiceFile)
+        public async Task<ActionResult> FinanceInvoiceApproveAsync(long id, IFormFile InvoiceFile)
         {
 
             string InvoiceUrl = "https://resadmin.uomus.edu.iq";//todo 
@@ -730,7 +730,7 @@ namespace aspcore.Controllers
                 researchMUS.Degrees = String.Join(Environment.NewLine, rrts.Select(item => item.ResearcherDeg).ToList());
                 researchMUS.OrderDate = OrderDate.Date;
                 researchMUS.OrderNumber = OrderNumber;
-              
+
                 List<string> deplist = new List<string>();
                 foreach (var item in rrts)
                 {
@@ -765,10 +765,6 @@ namespace aspcore.Controllers
                 return Problem("Entity set 'ApplicationDbContext.ResearchMUS'  is null.");
             }
 
-
-
-
-
             var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == research.Id && item.viewlvl == 1);
             if (researchMUS != null)
             {
@@ -789,7 +785,7 @@ namespace aspcore.Controllers
             }
 
             await _context.SaveChangesAsync();
-          
+
             return RedirectToAction(nameof(Index));
 
 
@@ -828,13 +824,99 @@ namespace aspcore.Controllers
             try
             {
                 System.Net.WebClient wc = new System.Net.WebClient();
-                  wc.DownloadString(researchMUS.ResFormId + $"?secret=kjhadbfkgdbfhgadfgadbfgadfkjasdkvbhc&status=4");
+                wc.DownloadString(researchMUS.ResFormId + $"?secret=kjhadbfkgdbfhgadfgadbfgadfkjasdkvbhc&status=4");
 
             }
             catch
             {
                 return RedirectPermanent(researchMUS.ResFormId + $"?secret=kjhadbfkgdbfhgadfgadbfgadfkjasdkvbhc&status=4");
             }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost, ActionName("ITRemoveAddes")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ITRemoveAddes(ResearchMUS research)
+        {
+            if (_context.ResearchMUS == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.ResearchMUS'  is null.");
+            }
+
+
+
+
+
+            var researchMUS = await _context.ResearchMUS.FirstAsync(item => item.Id == research.Id && item.viewlvl == 1);
+
+            if (_context.RR2tabel.Count(item => item.ResearchId == researchMUS.Id) > 1)
+            {
+                return Problem("لا يمكن معالجة الطلب");
+            }
+            if (researchMUS != null)
+            {
+
+                int totalMoney = 0;
+                switch (researchMUS.quartile)
+                {
+                    case 1:
+                        totalMoney= _context.paymentSettings.First().Q1First;
+                        break;
+                    case 2:
+                        totalMoney = _context.paymentSettings.First().Q2First;
+
+                        break;
+                    case 3:
+                        totalMoney = _context.paymentSettings.First().Q3First;
+
+                        break;
+                    case 4:
+                        totalMoney = _context.paymentSettings.First().Q4First;
+                        break;
+                    default:
+                        break;
+                }
+                foreach (var item in _context.RR2tabel.Where(item => item.ResearchId == researchMUS.Id))
+                {
+                    item.ResearcherMoney = totalMoney;
+ 
+                }
+                foreach (var item in _context.PaymentLog.Where(item => item.ResearchId == researchMUS.Id))
+                {
+                    item.total = totalMoney;
+                    item.femaleM = 0;
+                    item.scopusHumanDepartmentMoney = 0;
+                    item.citationM = 0;
+                    item.quartileMoney = totalMoney;
+                    item.other = 0;
+                    item.clarivateMoney = 0;
+                    item.ExtResrchMoney = 0;
+                    item.GrantMoney = 0;
+                    item.ImpactFacterMoney = 0;
+                    item.MainRMoney = 0;
+                    item.openAccessMoney = 0;
+                    item.responsibleMoney = 0;
+                    item.ThanksOFcollMoney = 0;
+                    item.SDGMoney = 0;
+                    item.publishedMoney  = 0;
+ 
+                }
+
+
+
+                researchMUS.totalMoney = totalMoney;
+                researchMUS.Amounts = totalMoney.ToString();
+
+                researchMUS.checkState = "7";
+                researchMUS.PrintCount = 0;
+                researchMUS.LastUpDate = DateTime.Now;
+
+            }
+
+
+
+            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -878,7 +960,7 @@ namespace aspcore.Controllers
                 };
                 _context.Invoices.Add(invoice);
                 _context.SaveChanges();
-                researchMUS.InvoiceId =Convert.ToInt32( invoice.Id.ToString());
+                researchMUS.InvoiceId = Convert.ToInt32(invoice.Id.ToString());
                 _context.SaveChanges();
             }
             else

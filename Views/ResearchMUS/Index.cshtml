@@ -45,15 +45,17 @@
                                 case "1":
                                     <option selected value="1">في الانتظار</option>
                                     <option value="7">الحاضنه موافقة</option>
+                                    <option value="3">الحاضنه مرفوض</option>
                                     <option value="4">الرئاسه - طباعة</option>
                                     <option value="5">الرئاسة - موافقة</option>
                                     <option value="6">الرئاسة - رفض</option>
                                     <option value="8">المالية</option>
-
                                     break;
                                 case "7":
                                     <option value="1">في الانتظار</option>
                                     <option selected value="7">الحاضنه موافقة</option>
+                                    <option value="3">الحاضنه مرفوض</option>
+
                                     <option value="4">الرئاسه - طباعة</option>
                                     <option value="5">الرئاسة - موافقة</option>
                                     <option value="6">الرئاسة - رفض</option>
@@ -63,8 +65,20 @@
                                 case "4":
                                     <option value="1">في الانتظار</option>
                                     <option value="7">الحاضنه موافقة</option>
+                                    <option value="3">الحاضنه مرفوض</option>
 
                                     <option selected value="4">الرئاسه - طباعة</option>
+                                    <option value="5">الرئاسة - موافقة</option>
+                                    <option value="6">الرئاسة - رفض</option>
+                                    <option value="8">المالية</option>
+
+                                    break;
+                                case "3":
+                                    <option value="1">في الانتظار</option>
+                                    <option value="7">الحاضنه موافقة</option>
+                                    <option selected value="3">الحاضنه مرفوض</option>
+
+                                    <option value="4">الرئاسه - طباعة</option>
                                     <option value="5">الرئاسة - موافقة</option>
                                     <option value="6">الرئاسة - رفض</option>
                                     <option value="8">المالية</option>
@@ -73,6 +87,7 @@
                                 case "5":
                                     <option value="1">في الانتظار</option>
                                     <option value="7">الحاضنه موافقة</option>
+                                    <option value="3">الحاضنه مرفوض</option>
 
                                     <option value="4">الرئاسه - طباعة</option>
                                     <option selected value="5">الرئاسة - موافقة</option>
@@ -83,6 +98,7 @@
                                 case "6":
                                     <option value="1">في الانتظار</option>
                                     <option value="7">الحاضنه موافقة</option>
+                                    <option value="3">الحاضنه مرفوض</option>
 
                                     <option value="4">الرئاسه - طباعة</option>
                                     <option value="5">الرئاسة - موافقة</option>
@@ -93,6 +109,7 @@
                                 case "8":
                                     <option value="1">في الانتظار</option>
                                     <option value="7">الحاضنه موافقة</option>
+                                    <option value="3">الحاضنه مرفوض</option>
 
                                     <option value="4">الرئاسه - طباعة</option>
                                     <option value="5">الرئاسة - موافقة</option>
@@ -102,6 +119,8 @@
                                 default:
                                     <option value="1">في الانتظار</option>
                                     <option value="7">الحاضنه موافقة</option>
+                                    <option value="3">الحاضنه مرفوض</option>
+
                                     <option value="4">الرئاسه - طباعة</option>
                                     <option value="5">الرئاسة - موافقة</option>
                                     <option value="6">الرئاسة - رفض</option>
@@ -497,8 +516,8 @@ var res = confirm('هل تم توقيع الكتاب من رئيس الجامع�
                                             var res = confirm('هل تم صرف البحث ؟ يرجى ارفاق الوصل');
 
                                             // Check if the response is not null or empty
-                                            if (res == true  ) {
-                                                 // Set the hidden input value
+                                            if (res == true) {
+                                                // Set the hidden input value
                                                 var fileInput = document.getElementById('InvoiceFile');
 
                                                 fileInput.hidden = false; // Unhide the file input temporarily
@@ -511,7 +530,7 @@ var res = confirm('هل تم توقيع الكتاب من رئيس الجامع�
                                                     document.getElementById('reviewForm').submit();
                                                 });
                                                 // Submit the form
-                                               // document.getElementById('reviewForm').submit();
+                                                // document.getElementById('reviewForm').submit();
                                             } else {
                                                 // Do nothing if the response is invalid
                                                 return false;
